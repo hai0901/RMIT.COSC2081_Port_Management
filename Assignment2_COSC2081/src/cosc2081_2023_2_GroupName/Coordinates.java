@@ -1,14 +1,10 @@
-public class Location {
+package cosc2081_2023_2_GroupName;
 
-    /****************
-     * Set variable.*
-     ****************/
-
-
+public class Coordinates {
     private double latitude;
     private double longitude;
 
-    public Location(double latitude, double longitude) {
+    public Coordinates(double latitude, double longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
     }
@@ -17,20 +13,23 @@ public class Location {
         return latitude;
     }
 
-    public double getLongitude() {
-        return longitude;
-    }
-
     public void setLatitude(double latitude) {
         this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
     }
 
     public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
 
-    /****************
-     * Set method.*
-     ****************/
-
+    @Override
+    public String toString() {
+        return "Coordinates{" +
+                "latitude=" + latitude +
+                ", longitude=" + longitude +
+                '}';
+    }
 }
