@@ -1,3 +1,6 @@
+import java.awt.Container;
+import java.util.ArrayList;
+
 public class Port {
     /****************
      * Set variable.*
@@ -7,129 +10,100 @@ public class Port {
     private String pName; //port's name
     private double pCapacity; //port's capacity
     private boolean landing; //port's landing ability
-    private int numCon; // number of containers
-    private int numVeh; // number of vehicles
     private Location location; // the location
-    private int numDryCon; //number of Dry storage conatiner
-    private int numTopCon; //number of Open top container
-    private int numSideCon; //number of Open Side container
-    private int numReCon; // number of Refrigerated container
-    private int numLiquidCon; // number of Liquid container
+    private ArrayList<Vehicle> vehicles;
+    private ArrayList<Container> containers;
+    private ArrayList<Trip> trips;
 
-
-    public Port(String pNum, String pName, double pCapacity, boolean landing, int numCon, int numVeh, Location location, int numDryCon, int numTopCon, int numSideCon, int numReCon, int numLiquidCon) {
+    public Port(String pNum, String pName, double pCapacity, boolean landing, Location location, ArrayList<Vehicle> vehicles, ArrayList<Container> containers, ArrayList<Trip> trips) {
         this.pNum = pNum;
         this.pName = pName;
         this.pCapacity = pCapacity;
         this.landing = landing;
-        this.numCon = numCon;
-        this.numVeh = numVeh;
         this.location = location;
-        this.numDryCon = numDryCon;
-        this.numTopCon = numTopCon;
-        this.numSideCon = numSideCon;
-        this.numReCon = numReCon;
-        this.numLiquidCon = numLiquidCon;
+        this.vehicles = vehicles;
+        this.containers = containers;
+        this.trips = trips;
     }
 
     public String getpNum() {
         return pNum;
     }
 
-    public String getpName() {
-        return pName;
-    }
-
-    public double getpCapacity() {
-        return pCapacity;
-    }
-
-    public boolean isLanding() {
-        return landing;
-    }
-
-    public int getNumCon() {
-        return numCon;
-    }
-
-    public int getNumVeh() {
-        return numVeh;
-    }
-
-    public Location getLocation() {
-        return location;
-    }
-
     public void setpNum(String pNum) {
         this.pNum = pNum;
+    }
+
+    public String getpName() {
+        return pName;
     }
 
     public void setpName(String pName) {
         this.pName = pName;
     }
 
+    public double getpCapacity() {
+        return pCapacity;
+    }
+
     public void setpCapacity(double pCapacity) {
         this.pCapacity = pCapacity;
+    }
+
+    public boolean isLanding() {
+        return landing;
     }
 
     public void setLanding(boolean landing) {
         this.landing = landing;
     }
 
-    public void setNumCon(int numCon) {
-        this.numCon = numCon;
-    }
-
-    public void setNumVeh(int numVeh) {
-        this.numVeh = numVeh;
+    public Location getLocation() {
+        return location;
     }
 
     public void setLocation(Location location) {
         this.location = location;
     }
 
-    // type of containers
-    public int getNumDryCon() {
-        return numDryCon;
+    public ArrayList<Vehicle> getVehicles() {
+        return vehicles;
     }
 
-    public void setNumDryCon(int numDryCon) {
-        this.numDryCon = numDryCon;
+    public void setVehicles(ArrayList<Vehicle> vehicles) {
+        this.vehicles = vehicles;
     }
 
-    public int getNumTopCon() {
-        return numTopCon;
+    public ArrayList<Container> getContainers() {
+        return containers;
     }
 
-    public void setNumTopCon(int numTopCon) {
-        this.numTopCon = numTopCon;
+    public void setContainers(ArrayList<Container> containers) {
+        this.containers = containers;
     }
 
-    public int getNumSideCon(){
-        return numSideCon;
+    public ArrayList<Trip> getTrips() {
+        return trips;
     }
 
-    public void setNumSideCon(int numSideCon){
-        this.numSideCon =numSideCon;
+    public void setTrips(ArrayList<Trip> trips) {
+        this.trips = trips;
     }
-    public int getNumReCon() {
-        return numReCon;
+    public void addContainer(Container container){
+        containers.add(container);
     }
-
-    public void setNumReCon(int numReCon) {
-        this.numReCon = numReCon;
+    public void removeContainer(Container container){
+        container.remove(container);
     }
-
-    public int getNumLiquidCon() {
-        return numLiquidCon;
+    public void addVehicle(Vehicle vehicle){
+        vehicles.add(vehicle);
     }
-
-    public void setNumLiquidCon(int numLiquidCon) {
-        this.numLiquidCon = numLiquidCon;
+    public void removeVehicle(Vehicle vehicle){
+        vehicles.remove(vehicle);
     }
-
-    /****************
-     * Set method.*
-     ****************/
+    public double getDistanceOtherPort(Port otherPort){
+        return location.calculateDistance(otherPort.getLocation());
+    }
+    
 
 }
