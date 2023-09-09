@@ -101,9 +101,11 @@ public class Port {
     public void removeVehicle(Vehicle vehicle){
         vehicles.remove(vehicle);
     }
+
     public double getDistanceOtherPort(Port otherPort){
         return location.calculateDistance(otherPort.getLocation());
     }
-    
+
+
 
 }

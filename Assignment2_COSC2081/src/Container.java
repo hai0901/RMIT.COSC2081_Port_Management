@@ -4,12 +4,12 @@ public class Container {
      ****************/
 
     private String conNum; //container's number
-    private String conType; // cotainer type
+    private ContainerType conType; // container's type
     private double conWeight; //container weight
 
-    public Container(String conNum, String conType, double conWeight) {
+    public Container(String conNum, String conType, double conWeight, ContainerType ContainerType) {
         this.conNum = conNum;
-        this.conType = conType;
+        this.conType = ContainerType;
         this.conWeight = conWeight;
     }
 
@@ -17,7 +17,7 @@ public class Container {
         return conNum;
     }
 
-    public String getConType() {
+    public ContainerType getConType() {
         return conType;
     }
 
@@ -29,14 +29,20 @@ public class Container {
         this.conNum = conNum;
     }
 
-    public void setConType(String conType) {
+    public void setConType(ContainerType conType) {
         this.conType = conType;
     }
 
     public void setConWeight(double conWeight) {
         this.conWeight = conWeight;
     }
-    /****************
-     * Set method.*
-     ****************/
+
+    @Override
+    public String toString() {
+        return "Container{" +
+                "conNum='" + conNum + '\'' +
+                ", conType=" + conType +
+                ", conWeight=" + conWeight +
+                '}';
+    }
 }

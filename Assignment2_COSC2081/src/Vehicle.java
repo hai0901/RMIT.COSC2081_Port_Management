@@ -1,7 +1,5 @@
 public class Vehicle {
-    /****************
-     * Set variable.*
-     ****************/
+
     private String name;
     private double currentFuel;
     private double capacityFuel;
@@ -9,6 +7,13 @@ public class Vehicle {
     private int container;
     private String vehID;
     private int carryingCapacity;
+    private int totalContainer;
+    private int dryStorageContainers;
+    private int openTopContainers;
+    private int openSideContainers;
+    private int refrigeratedContainers;
+    private int liquidContainers;
+
 
     public Vehicle(String name, double currentFuel, double capacityFuel, Port currentPort, int container, String vehID, int carryingCapacity) {
         this.name = name;
@@ -18,6 +23,7 @@ public class Vehicle {
         this.container = container;
         this.vehID = vehID;
         this.carryingCapacity = carryingCapacity;
+        this.totalContainer=0;//Default number of container is zero
     }
 
     public String getName() {
@@ -60,7 +66,46 @@ public class Vehicle {
         return carryingCapacity;
     }
 
-    /****************
-     * Set method.*
-     ****************/
+    public void refuel(){
+        currentFuel=capacityFuel;
+        //set the current fuel level to maximum capacity
+        System.out.println(name+"has been fully refueled");
+    }
+    public void loadContainer(Container container){
+        totalContainer++;
+        if (container.getConType() == ContainerType.DRY_STORAGE){
+            dryStorageContainers++;
+        }
+        if (container.getConType() == ContainerType.OPEN_TOP){
+            openTopContainers++;
+        }
+        if (container.getConType() == ContainerType.OPEN_SIDE){
+            openSideContainers++;
+        }
+        if (container.getConType() == ContainerType.REFRIGERATED){
+            refrigeratedContainers++;
+        }
+        if (container.getConType() == ContainerType.LIQUID){
+            liquidContainers++;
+        }
+    }
+    public void unloadContainer(Container container){
+        totalContainer--;
+        if (container.getConType() == ContainerType.DRY_STORAGE){
+            dryStorageContainers--;
+        }
+        if (container.getConType() == ContainerType.OPEN_TOP){
+            openTopContainers--;
+        }
+        if (container.getConType() == ContainerType.OPEN_SIDE){
+            openSideContainers--;
+        }
+        if (container.getConType() == ContainerType.REFRIGERATED){
+            refrigeratedContainers--;
+        }
+        if (container.getConType() == ContainerType.LIQUID){
+            liquidContainers--;
+        }
+    }
+
 }
