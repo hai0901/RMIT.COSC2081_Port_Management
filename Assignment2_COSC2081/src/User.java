@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 public abstract class User {
     private String username;
     private String password;
@@ -6,6 +8,15 @@ public abstract class User {
         this.username = username;
         this.password = password;
     }
+
+
+
+
+
+
+
+
+
 
     public String getUsername() {
         return username;
@@ -21,6 +32,14 @@ public abstract class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 }
 
