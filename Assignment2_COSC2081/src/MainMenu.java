@@ -20,21 +20,19 @@ public class MainMenu {
             try {
                 actionNum = Byte.parseByte(action);
                 switch (actionNum) {
-                    case 1:
-                        manager.Login(); // assuming your ManagerCRUD class has a similar Login method
-                        manager.managerMenu(); // assuming your ManagerCRUD class has a similar managerMenu method
-                        break;
-                    case 2:
+                    case 1 -> {
+                        manager.Login();
+                        manager.managerMenu();
+                    }
+                    case 2 -> {
                         admin.Login();
                         admin.adminMenu();
-                        break;
-                    case 3:
+                    }
+                    case 3 -> {
                         System.out.println("Exiting program...");
                         isRunning = false;
-                        break;
-                    default:
-                        System.out.println("Invalid choice! Please enter a number between 1 and 3.");
-                        break;
+                    }
+                    default -> System.out.println("Invalid choice! Please enter a number between 1 and 3.");
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Invalid input! Please enter a number.");

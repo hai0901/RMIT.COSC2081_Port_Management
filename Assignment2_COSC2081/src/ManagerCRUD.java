@@ -5,13 +5,12 @@ import java.util.Scanner;
 
 public class ManagerCRUD {
     static Scanner scanner = new Scanner(System.in);
-    private MainMenu mainMenu;
 
-    private static boolean validateLogin(String adminAccount, String fileName) {
-        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+    private static boolean validateLogin(String managerAccount) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("Assignment2_COSC2081/src/manager_login_credential.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                if (line.equals(adminAccount)) {
+                if (line.equals(managerAccount)) {
                     return true;
                 }
             }
@@ -30,12 +29,12 @@ public class ManagerCRUD {
         return username + ", " + password;
     }
 
-    public void Login() throws Exception {
+    public void Login() {
         boolean isRunning = true;
 
         while (isRunning) {
                 System.out.println("----------------MANAGER LOGIN PAGE----------------");
-            if (validateLogin(displayLogin(), "Assignment2_COSC2081/src/manager_login_credential.txt")) {
+            if (validateLogin(displayLogin())) {
                 System.out.println("Login successful!");
                 System.out.println("--------------------------------------------------");
                 isRunning = false;
@@ -51,7 +50,7 @@ public class ManagerCRUD {
 
 
     // manager menu
-    public void managerMenu() throws Exception {
+    public void managerMenu() {
         String action;
         byte actionNum;
         boolean isRunning = true;
@@ -68,34 +67,20 @@ public class ManagerCRUD {
             try {
                 actionNum = Byte.parseByte(action);
                 switch (actionNum) {
-                    case 1:
-                        System.out.println("View Managers");
-                        break;
-                    case 2:
-                        System.out.println("Update Manager");
-                        break;
-                    case 3:
-                        System.out.println("Delete Manager");
-                        break;
-                    case 4:
-                        System.out.println("View Manager");
-                        break;
-                    case 5:
+                    case 1 -> System.out.println("View Managers");
+                    case 2 -> System.out.println("Update Manager");
+                    case 3 -> System.out.println("Delete Manager");
+                    case 4 -> System.out.println("View Manager");
+                    case 5 -> {
                         System.out.println("Exit Manager Menu");
                         isRunning = false;
-                        break;
-                    default:
-                        System.out.println("Invalid Action!");
-                        break;
+                    }
+                    default -> System.out.println("Invalid Action!");
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Invalid input! Please enter a number.");
             }
         }
     }
-    public static void main(String[] args) throws Exception {
-        ManagerCRUD managerCRUD = new ManagerCRUD();
-        managerCRUD.Login();
-        managerCRUD.managerMenu();
-    }
+
 }
