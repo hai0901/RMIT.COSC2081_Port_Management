@@ -3,7 +3,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Scanner;
 
-public class AdminCRUD {
+public class ManagerCRUD {
     static Scanner scanner = new Scanner(System.in);
     private MainMenu mainMenu;
 
@@ -21,10 +21,10 @@ public class AdminCRUD {
         return false;
     }
     private static String displayLogin() {
-        System.out.println("Enter admin username: ");
+        System.out.println("Enter manager username: ");
         Scanner scanner = new Scanner(System.in);
         String username = scanner.nextLine();
-        System.out.println("Enter admin password: ");
+        System.out.println("Enter manager password: ");
         String password = scanner.nextLine();
 
         return username + ", " + password;
@@ -34,8 +34,8 @@ public class AdminCRUD {
         boolean isRunning = true;
 
         while (isRunning) {
-            System.out.println("-----------------ADMIN LOGIN PAGE-----------------");
-            if (validateLogin(displayLogin(), "Assignment2_COSC2081/src/admin_login_credential.txt")) {
+                System.out.println("----------------MANAGER LOGIN PAGE----------------");
+            if (validateLogin(displayLogin(), "Assignment2_COSC2081/src/manager_login_credential.txt")) {
                 System.out.println("Login successful!");
                 System.out.println("--------------------------------------------------");
                 isRunning = false;
@@ -50,18 +50,18 @@ public class AdminCRUD {
 
 
 
-    // admin menu
-    public void adminMenu() throws Exception {
+    // manager menu
+    public void managerMenu() throws Exception {
         String action;
         byte actionNum;
         boolean isRunning = true;
-        System.out.println("--------------------ADMIN MENU--------------------");
+        System.out.println("-------------------MANAGER MENU-------------------");
         while (isRunning) {
             System.out.println("1. View Managers");
             System.out.println("2. Update Manager");
             System.out.println("3. Delete Manager");
             System.out.println("4. View Manager");
-            System.out.println("5. Exit Admin Menu");
+            System.out.println("5. Exit Manager Menu");
             System.out.println("--------------------------------------------------");
             System.out.println("Enter your action: ");
             action = scanner.nextLine();
@@ -81,11 +81,11 @@ public class AdminCRUD {
                         System.out.println("View Manager");
                         break;
                     case 5:
-                        System.out.println("Exit Admin Menu");
+                        System.out.println("Exit Manager Menu");
                         isRunning = false;
                         break;
                     default:
-                        System.out.println("Invalid action!");
+                        System.out.println("Invalid Action!");
                         break;
                 }
             } catch (NumberFormatException e) {
@@ -94,8 +94,8 @@ public class AdminCRUD {
         }
     }
     public static void main(String[] args) throws Exception {
-        AdminCRUD adminCRUD = new AdminCRUD();
-        adminCRUD.Login();
-        adminCRUD.adminMenu();
+        ManagerCRUD managerCRUD = new ManagerCRUD();
+        managerCRUD.Login();
+        managerCRUD.managerMenu();
     }
 }
