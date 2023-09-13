@@ -2,7 +2,8 @@ package Vehicle;
 
 import Container.Container;
 import Port.Port;
-import Container.DryStorage
+import Container.DryStorage;
+import Port.Location;
 public class Vehicle {
 
     private String name;
@@ -78,7 +79,7 @@ public class Vehicle {
         //set the current fuel level to maximum capacity
         System.out.println(name+"has been fully refueled");
     }
-    public void loadContainer(Container container){
+    /*public void loadContainer(Container container){
         totalContainer++;
         if (Container.DryStorage == ContainerType.DRY_STORAGE){
             dryStorageContainers++;
@@ -171,7 +172,7 @@ public class Vehicle {
         } else {
             System.out.println(name + "does not have enough fuel to move to" + destinationPort.getpName());
         }
-    }
+    }*/
     //This method is used to check if the vehicle can carry the container
 
 }
