@@ -1,3 +1,8 @@
+package Port;
+
+import Port.Port;
+import Vehicle.Vehicle;
+
 import java.util.Date;
 
 public class Trip {

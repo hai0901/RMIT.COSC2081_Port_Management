@@ -1,3 +1,8 @@
+package Vehicle;
+
+import Container.Container;
+import Port.Port;
+import Container.DryStorage
 public class Vehicle {
 
     private String name;
@@ -75,7 +80,7 @@ public class Vehicle {
     }
     public void loadContainer(Container container){
         totalContainer++;
-        if (container.getConType() == ContainerType.DRY_STORAGE){
+        if (Container.DryStorage == ContainerType.DRY_STORAGE){
             dryStorageContainers++;
         }
         if (container.getConType() == ContainerType.OPEN_TOP){
@@ -157,5 +162,16 @@ public class Vehicle {
                 return 0.0; // Default rate for unknown type
         }
     }
+    public void move(Port destinationPort,ContainerType containerType) {
+        double fuelConsumption = calculateFuelConsumption(destinationPort, containerType);
+        if (currentFuel >= fuelConsumption) {
+            currentFuel -= fuelConsumption;
+            currentPort = destinationPort;
+            System.out.println(name + "has moved to" + destinationPort.getpName());
+        } else {
+            System.out.println(name + "does not have enough fuel to move to" + destinationPort.getpName());
+        }
+    }
+    //This method is used to check if the vehicle can carry the container
 
 }
