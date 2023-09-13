@@ -1,8 +1,11 @@
+
 package Vehicle;
+import Port.Location;
+
 
 import Container.Container;
 import Port.Port;
-import Container.DryStorage
+import Container.DryStorage;
 public class Vehicle {
 
     private String name;
@@ -78,100 +81,5 @@ public class Vehicle {
         //set the current fuel level to maximum capacity
         System.out.println(name+"has been fully refueled");
     }
-    public void loadContainer(Container container){
-        totalContainer++;
-        if (Container.DryStorage == ContainerType.DRY_STORAGE){
-            dryStorageContainers++;
-        }
-        if (container.getConType() == ContainerType.OPEN_TOP){
-            openTopContainers++;
-        }
-        if (container.getConType() == ContainerType.OPEN_SIDE){
-            openSideContainers++;
-        }
-        if (container.getConType() == ContainerType.REFRIGERATED){
-            refrigeratedContainers++;
-        }
-        if (container.getConType() == ContainerType.LIQUID){
-            liquidContainers++;
-        }
-    }
-    public void unloadContainer(Container container){
-        totalContainer--;
-        if (container.getConType() == ContainerType.DRY_STORAGE){
-            dryStorageContainers--;
-        }
-        if (container.getConType() == ContainerType.OPEN_TOP){
-            openTopContainers--;
-        }
-        if (container.getConType() == ContainerType.OPEN_SIDE){
-            openSideContainers--;
-        }
-        if (container.getConType() == ContainerType.REFRIGERATED){
-            refrigeratedContainers--;
-        }
-        if (container.getConType() == ContainerType.LIQUID){
-            liquidContainers--;
-        }
-    }
-    public double calculateFuelConsumption(Port destinationPort,ContainerType containerType){
-        double fuelConsumptionRate;
-        if (this instanceof Ship) {
-            fuelConsumptionRate = getFuelConsumptionRateShip(containerType);
-        } else if (this instanceof Truck) {
-
-            fuelConsumptionRate = getFuelConsumptionRateTruck(containerType);
-        } else {
-            fuelConsumptionRate = 1; //The default value for other vehicles if needed
-        }
-        double fuelConsumption = fuelConsumptionRate * location.calculateDistance(destinationPort.getLocation());
-
-        return fuelConsumption;
-
-    }
-    private double getFuelConsumptionRateShip(ContainerType containerType) {
-        switch (containerType) {
-            case DRY_STORAGE:
-                return 3.5;
-            case OPEN_TOP:
-                return 2.8;
-            case OPEN_SIDE:
-                return 2.7;
-            case REFRIGERATED:
-                return 4.5;
-            case LIQUID:
-                return 4.8;
-            default:
-                return 0.0; // Default rate for unknown type
-        }
-    }
-
-    private double getFuelConsumptionRateTruck(ContainerType containerType) {
-        switch (containerType) {
-            case DRY_STORAGE:
-                return 4.6;
-            case OPEN_TOP:
-                return 3.2;
-            case OPEN_SIDE:
-                return 3.2;
-            case REFRIGERATED:
-                return 5.4;
-            case LIQUID:
-                return 5.3;
-            default:
-                return 0.0; // Default rate for unknown type
-        }
-    }
-    public void move(Port destinationPort,ContainerType containerType) {
-        double fuelConsumption = calculateFuelConsumption(destinationPort, containerType);
-        if (currentFuel >= fuelConsumption) {
-            currentFuel -= fuelConsumption;
-            currentPort = destinationPort;
-            System.out.println(name + "has moved to" + destinationPort.getpName());
-        } else {
-            System.out.println(name + "does not have enough fuel to move to" + destinationPort.getpName());
-        }
-    }
-    //This method is used to check if the vehicle can carry the container
 
 }
