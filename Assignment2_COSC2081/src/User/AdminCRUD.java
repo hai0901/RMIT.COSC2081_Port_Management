@@ -12,7 +12,7 @@ public class AdminCRUD {
     }
 
     private static boolean validateLogin(String adminAccount) {
-        try (BufferedReader reader = new BufferedReader(new FileReader("Assignment2_COSC2081/src/admin_login_credential.txt"))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("Assignment2_COSC2081/src/User/admin_login_credential.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 if (line.equals(adminAccount)) {
