@@ -1,6 +1,6 @@
 package Container;
 
-public class Container {
+public abstract class Container {
 
     /****************
      * Set variable.*

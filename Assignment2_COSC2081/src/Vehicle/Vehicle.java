@@ -8,7 +8,7 @@ import Container.Liquid;
 import Container.OpenSide;
 import Container.Refrigerated;
 import Port.Location;
-public class Vehicle {
+public abstract class Vehicle {
 
     private String name;
     private double currentFuel;
@@ -182,6 +182,6 @@ public class Vehicle {
             System.out.println(name + "does not have enough fuel to move to" + destinationPort.getpName());
         }
     }
-    
+
 
 }
