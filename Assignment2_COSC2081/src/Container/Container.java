@@ -1,46 +1,33 @@
 package Container;
 
-public class Container {
+public abstract class Container {
+    private String id;
+    private double weight;
 
-    /****************
-     * Set variable.*
-     ****************/
-
-    private String conNum; //container's number
-
-    private double conWeight; //container weight
-
-    public Container(String conNum, double conWeight) {
-        this.conNum = conNum;
-
-        this.conWeight = conWeight;
+    Container(String id, double weight) {
+        this.id = id;
+        this.weight = weight;
     }
 
-    public String getConNum() {
-        return conNum;
+    public String getId() {
+        return id;
     }
 
-
-
-    public double getConWeight() {
-        return conWeight;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public void setConNum(String conNum) {
-        this.conNum = conNum;
+    public double getWeight() {
+        return weight;
     }
 
-
-
-    public void setConWeight(double conWeight) {
-        this.conWeight = conWeight;
+    public void setWeight(double weight) {
+        this.weight = weight;
     }
 
-    @Override
-    public String toString() {
-        return "Container.Container{" +
-                "conNum='" + conNum + '\'' +
-                ", conWeight=" + conWeight +
-                '}';
-    }
+    public abstract double getShipFuelConsumption(Port A, Port B);
+
+    public abstract double getTruckFuelConsumption(Port A, Port B);
 }
+
+

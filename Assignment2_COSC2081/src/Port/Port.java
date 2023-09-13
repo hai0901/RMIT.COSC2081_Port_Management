@@ -1,3 +1,4 @@
+/*
 package Port;
 
 import Vehicle.Vehicle;
@@ -6,9 +7,11 @@ import java.awt.Container;
 import java.util.ArrayList;
 
 public class Port {
-    /****************
+    */
+/****************
      * Set variable.*
-     ****************/
+     ****************//*
+
 
     private String pNum; //port's number
     private String pName; //port's name
@@ -112,4 +115,4 @@ public class Port {
 
 
 
-}
+}*/

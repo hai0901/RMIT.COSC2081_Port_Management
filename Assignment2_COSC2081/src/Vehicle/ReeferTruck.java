@@ -1,3 +1,4 @@
+/*
 package Vehicle;
 
 import Port.Port;
@@ -7,3 +8,4 @@ public class ReeferTruck extends Truck{
         super(name, currentFuel, capacityFuel, currentPort, container, vehID, carryingCapacity);
     }
 }
+*/

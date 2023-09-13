@@ -1,3 +1,4 @@
+/*
 package Vehicle;
 
 import Container.Container;
@@ -175,3 +176,4 @@ public class Vehicle {
     //This method is used to check if the vehicle can carry the container
 
 }
+*/

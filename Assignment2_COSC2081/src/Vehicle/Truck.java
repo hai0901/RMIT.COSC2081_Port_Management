@@ -1,3 +1,4 @@
+/*
 package Vehicle;
 
 import Vehicle.Vehicle;
@@ -9,3 +10,4 @@ public class Truck extends Vehicle {
         super(name, currentFuel, capacityFuel, currentPort, container, vehID, carryingCapacity);
     }
 }
+*/
