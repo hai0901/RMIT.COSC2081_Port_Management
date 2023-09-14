@@ -28,6 +28,14 @@ public abstract class Container {
     public abstract double getShipFuelConsumption(Port A, Port B);
 
     public abstract double getTruckFuelConsumption(Port A, Port B);
+
+    @Override
+    public String toString() {
+        return "Container{" +
+                "id='" + id + '\'' +
+                ", weight=" + weight +
+                '}';
+    }
 }
 
 
