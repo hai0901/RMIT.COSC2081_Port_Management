@@ -5,10 +5,19 @@ public class Port {
     private double latitude;
     private double longitude;
 
-    Port( String name, double latitude, double longitude) {
+    public Port(String name, double latitude, double longitude) {
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
+    }
+
+    @Override
+    public String toString() {
+        return "Port{" +
+                "name='" + name + '\'' +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                '}';
     }
 
     public double getDistanceInKm(Port any) {
