@@ -1,3 +1,4 @@
+/*
 package Port;
 
 import Vehicle.Vehicle;
@@ -6,9 +7,11 @@ import java.awt.Container;
 import java.util.ArrayList;
 
 public class Port {
-    /****************
+    */
+/****************
      * Set variable.*
-     ****************/
+     ****************//*
+
 
     private String pNum; //port's number
     private String pName; //port's name
@@ -111,5 +114,29 @@ public class Port {
     }
 
 
+
+}*/
+
+package Port;
+public class Port {
+    private String name;
+    public Port(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "Port{" +
+                "name='" + name + '\'' +
+                '}';
+    }
 
 }

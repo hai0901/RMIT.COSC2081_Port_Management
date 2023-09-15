@@ -6,7 +6,8 @@ Instructor: Mr. Minh Vu & Dr. Phong Ngo
 Group: Group Name
 s3979239, Nguyen Pham Tien Hai
 s3963893, Dang Truong Phat
-sXXXXXXX, Student Name
+s3975831, Ngo Quang Khai
+s3979628, Cao Le Hoang Minh
 */
 
 

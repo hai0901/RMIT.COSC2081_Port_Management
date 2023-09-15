@@ -4,9 +4,6 @@ import java.util.Scanner;
 
 public class MainMenu {
     public void display() throws Exception {
-        AdminCRUD admin = new AdminCRUD();
-        ManagerCRUD manager = new ManagerCRUD(); // assuming you have a similar class for managers
-
         Scanner scanner = new Scanner(System.in);
         String action;
         byte actionNum;
@@ -23,12 +20,12 @@ public class MainMenu {
                 actionNum = Byte.parseByte(action);
                 switch (actionNum) {
                     case 1 -> {
-                        manager.Login();
-                        manager.managerMenu();
+                        PortManager.Login();
+                        PortManager.showMenu();
                     }
                     case 2 -> {
-                        admin.Login();
-                        admin.adminMenu();
+                        SystemAdmin.Login();
+                        SystemAdmin.showMenu();
                     }
                     case 3 -> {
                         System.out.println("Exiting program...");
