@@ -18,8 +18,13 @@ public class Port {
     private ArrayList<Vehicle> vehicles;
     private ArrayList<Container> containers;
     private ArrayList<Trip> trips;
+    private int maxTankerTruckSlots;
+    private int maxBasicTruckSlots;
+    private int maxReeferTruckSlots;
+    private int maxShipSlots;
 
-    public Port(String pNum, String pName, double pCapacity, boolean landing, Location location, ArrayList<Vehicle> vehicles, ArrayList<Container> containers, ArrayList<Trip> trips) {
+    public Port(String pNum, String pName, double pCapacity, boolean landing, Location location, ArrayList<Vehicle> vehicles, ArrayList<Container> containers, ArrayList<Trip> trips ,int maxTankerTruckSlots, int maxBasicTruckSlots, int maxReeferTruckSlots, int maxShipSlots
+    ) {
         this.pNum = pNum;
         this.pName = pName;
         this.pCapacity = pCapacity;
@@ -28,6 +33,10 @@ public class Port {
         this.vehicles = vehicles;
         this.containers = containers;
         this.trips = trips;
+        this.maxTankerTruckSlots = maxTankerTruckSlots;
+        this.maxBasicTruckSlots = maxBasicTruckSlots;
+        this.maxReeferTruckSlots = maxReeferTruckSlots;
+        this.maxShipSlots = maxShipSlots;
     }
 
     public String getpNum() {
@@ -108,6 +117,48 @@ public class Port {
 
     public double getDistanceOtherPort(Port otherPort){
         return location.calculateDistance(otherPort.getLocation());
+    }
+
+    public void setMaxSlots(int maxTankerTruckSlots, int maxBasicTruckSlots, int maxReeferTruckSlots, int maxShipSlots) {
+        this.maxTankerTruckSlots = maxTankerTruckSlots;
+        this.maxBasicTruckSlots = maxBasicTruckSlots;
+        this.maxReeferTruckSlots = maxReeferTruckSlots;
+        this.maxShipSlots = maxShipSlots;
+    }
+    /*
+    // Method to check if there are enough slots for a TankerTruck
+    public boolean checkTankerTruckSlots() {
+        int currentTankerTruckCount = countVehiclesOfType(TankerTruck.class);
+        return currentTankerTruckCount < maxTankerTruckSlots;
+    }
+
+    // Method to check  slots for a BasicTruck
+    public boolean checkBasicTruckSlots() {
+        int currentBasicTruckCount = countVehiclesOfType(BasicTruck.class);
+        return currentBasicTruckCount < maxBasicTruckSlots;
+    }
+
+    // Method to check slots for a ReeferTruck
+    public boolean checkReeferTruckSlots() {
+        int currentReeferTruckCount = countVehiclesOfType(ReeferTruck.class);
+        return currentReeferTruckCount < maxReeferTruckSlots;
+    }
+
+    // Method to check slots for a Ship
+    public boolean checkShipSlots() {
+        int currentShipCount = countVehiclesOfType(Ship.class); mot vai ly do nao do thi no ko nhan ra may cai class abstract idk man
+        return currentShipCount < maxShipSlots; khong xong phan veh cung kho lam lam huhu
+    } */
+
+    // Method to count vehicles of a specific type
+    private int countVehiclesOfType(Class<? extends Vehicle> vehicleClass) {
+        int count = 0;
+        for (Vehicle vehicle : vehicles) {
+            if (vehicleClass.isInstance(vehicle)) {
+                count++;
+            }
+        }
+        return count;
     }
 
 
