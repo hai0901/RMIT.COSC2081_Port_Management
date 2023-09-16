@@ -3,7 +3,8 @@ package FileHandling;
 import java.io.*;
 
 public class File {
-    private String fileName;
+
+
 
     // Write to file
     public static void writeToFile(String fileName, String text) {

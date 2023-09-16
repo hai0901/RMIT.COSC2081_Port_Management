@@ -5,6 +5,12 @@ import java.util.Scanner;
 public class PortManager extends User {
     Scanner scanner = new Scanner(System.in);
     private String port;
+    private String username;
+    private String password;
+    public PortManager() {
+        super();
+        this.port = "";
+    }
 
     public PortManager(String username, String password, String port) {
         super(username, password);

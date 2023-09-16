@@ -26,41 +26,45 @@ public class MainMenu {
         this.active = active;
         adminInterface = new AdminInterface();
     }
-
-
     public void display() throws Exception {
+        int action;
+        PortManager customer = new PortManager();
+        PortManagerInterface customerInterface = new PortManagerInterface();
         Scanner scanner = new Scanner(System.in);
-        String action;
-        byte actionNum;
         boolean isRunning = true;
 
-        while (isRunning) {
-            System.out.println("1. Port Manager Login");
-            System.out.println("2. Admin Login");
-            System.out.println("3. Exit Program");
-            System.out.println("Enter your choice: ");
-            action = scanner.nextLine();
+        while (this.isActive()) {
+            System.out.println("Do you want to log in as admin or customer ?");
+            System.out.println("0. Close Program");
+            System.out.println("1. Log in as Port Manager");
+            System.out.println("2. Log in as Admin");
+            System.out.println("3. Create a Port Manager account?");
+            System.out.println("Please choose action : ");
+            action = scanner.nextInt();
+            scanner.nextLine();
 
-            try {
-                actionNum = Byte.parseByte(action);
-                switch (actionNum) {
-                    case 1 -> {
-                        System.out.println("manager");
-                    }
-                    case 2 -> {
-                        this.adminInterface.login();
-                        this.adminInterface.adminMenu();
-                    }
-                    case 3 -> {
-                        System.out.println("Exiting program...");
-                        isRunning = false;
-                    }
-                    default -> System.out.println("Invalid choice! Please enter a number between 1 and 3.");
-                }
-            } catch (NumberFormatException e) {
-                System.out.println("Invalid input! Please enter a number.");
+            switch (action) {
+                case 0:
+                    this.setActive(false);
+                    System.out.println("Thank you! Bye Bye!");
+                    break;
+                case 1:
+                    /* Port Manager Login */
+                    PortManagerInterface.login();
+                    break;
+                case 2:
+                    /* Admin Login*/
+                    this.adminInterface.login();
+                    break;
+                case 3:
+                    customerInterface.createNewPortManager();
+                    System.out.println("Your account has been successfully created.");
+                    this.setActive(false);
+                    break;
+                default:
+                    System.out.println("Wrong number please enter again!");
+                    break;
             }
         }
     }
 }
-
