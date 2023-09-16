@@ -84,14 +84,17 @@ public class Trip {
         return estimatedTotalWeight <= arrivalPort.getpCapacity();
     }
     public void performTrip() {
+        if (canPerformTrip()) {
+            departurePort.vehicleOutPort(vehicle);
+            vehicle.setCurrentPort(arrivalPort);
+            arrivalPort.vehiclesPortIn(vehicle);
 
-        departurePort.vehicleOutPort(vehicle);
-        vehicle.setCurrentPort(arrivalPort);
-        arrivalPort.vehiclesPortIn(vehicle);
-
-        System.out.println(vehicle.getName() + " has completed the trip from " +
-                departurePort.getpName() + " to " + arrivalPort.getpName() + ", the journal will be end on" + arrivalDate + " cost " + getArrivalDate());
+            System.out.println(vehicle.getName() + " has completed the trip from " +
+                    departurePort.getpName() + " to " + arrivalPort.getpName() +
+                    ", the journey will end on " + arrivalDate + " and cost " + getTripDurationInHours() + " hours.");
+        } else {
+            System.out.println("Cannot perform the trip due to weight constraints.");
+        }
     }
-
-
+    
 }
