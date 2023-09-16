@@ -4,6 +4,10 @@ import Vehicle.Vehicle;
 
 import java.awt.Container;
 import java.util.ArrayList;
+import Vehicle.ReeferTruck;
+import Vehicle.TankerTruck;
+import Vehicle.BasicTruck;
+import Vehicle.Ship;
 
 public class Port {
     /****************
@@ -125,7 +129,7 @@ public class Port {
         this.maxReeferTruckSlots = maxReeferTruckSlots;
         this.maxShipSlots = maxShipSlots;
     }
-    /*
+
     // Method to check if there are enough slots for a TankerTruck
     public boolean checkTankerTruckSlots() {
         int currentTankerTruckCount = countVehiclesOfType(TankerTruck.class);
@@ -146,9 +150,10 @@ public class Port {
 
     // Method to check slots for a Ship
     public boolean checkShipSlots() {
-        int currentShipCount = countVehiclesOfType(Ship.class); mot vai ly do nao do thi no ko nhan ra may cai class abstract idk man
-        return currentShipCount < maxShipSlots; khong xong phan veh cung kho lam lam huhu
-    } */
+        int currentShipCount = countVehiclesOfType(Ship.class);
+        return currentShipCount < maxShipSlots;
+    }
+
 
     // Method to count vehicles of a specific type
     private int countVehiclesOfType(Class<? extends Vehicle> vehicleClass) {
@@ -161,6 +166,37 @@ public class Port {
         return count;
     }
 
+    public void vehicleOutPort(Vehicle vehicleToRemove) {
+        // Iterate through the list to find the matching vehicle
+        for (int i = 0; i < vehicles.size(); i++) {
+            Vehicle currentVehicle = vehicles.get(i);
 
+            // Check if the current vehicle matches the input vehicle
+            if (currentVehicle.equals(vehicleToRemove)) {
+                // Remove the matching vehicle from the list
+                vehicles.remove(i);
+                System.out.println("Vehicle removed from the list: " + currentVehicle);
+                return; // Exit the loop once the vehicle is removed
+            }
+        }
+
+        // If the input vehicle is not found in the list
+        System.out.println("Vehicle not found in the list: " + vehicleToRemove);
+    }
+
+    public void vehiclesPortIn(Vehicle vehicleToAdd) {
+        // Add the vehicle to the list
+        vehicles.add(vehicleToAdd);
+        System.out.println("Vehicle added to the list: " + vehicleToAdd);
+    }
+
+    public boolean isCapacityFull() {
+        if (containers.size() >= pCapacity) {
+            System.out.println("Alert: The port is full.");
+        } else {
+            System.out.println("The port is not full.");
+        }
+        return false;
+    }
 
 }
