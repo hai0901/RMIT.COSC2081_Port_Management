@@ -78,6 +78,17 @@ public abstract class Vehicle {
         return carryingCapacity;
     }
 
+    public int getTotalContainer() { return totalContainer; }
+
+    public int getDryStorageContainers() { return dryStorageContainers; }
+
+    public int getOpenTopContainers() { return openTopContainers; }
+
+    public int getOpenSideContainers() { return openSideContainers; }
+
+    public int getRefrigeratedContainers() { return refrigeratedContainers; }
+
+    public int getLiquidContainers() { return liquidContainers; }
     public void refuel(){
         currentFuel=capacityFuel;
         //set the current fuel level to maximum capacity
