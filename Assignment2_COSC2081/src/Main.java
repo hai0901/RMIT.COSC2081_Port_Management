@@ -9,9 +9,7 @@ sXXXXXXX, Student Name
 */
 
 
-import Container.DryStorage;
-import Port.Port;
-import Port.Location;
+import Container.*;
 import Vehicle.*;
 import  Port.*;
 
@@ -64,6 +62,12 @@ public class Main {
         Ship ship5 = new Ship("Ship5", 5400.0, 8000.0, port, 0, "S5", 23000);
 
 
+        //Creating 5 instances of container
+        Container dry1 =  new DryStorage("1", 150);
+        Container re1 =  new Refrigerated("2", 200);
+        Container side1 = new OpenSide("3", 405);
+        Container top1 = new OpenTop("4", 375);
+        Container li1 = new Liquid("5", 653);
 
     }
 

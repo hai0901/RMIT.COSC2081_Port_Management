@@ -1,13 +1,10 @@
 package Port;
 
+import Container.Container;
 import Vehicle.Vehicle;
 
-import java.awt.Container;
 import java.util.ArrayList;
-import Vehicle.ReeferTruck;
-import Vehicle.TankerTruck;
-import Vehicle.BasicTruck;
-import Vehicle.Ship;
+
 
 public class Port {
     /****************
@@ -22,12 +19,9 @@ public class Port {
     private ArrayList<Vehicle> vehicles;
     private ArrayList<Container> containers;
     private ArrayList<Trip> trips;
-    private int maxTankerTruckSlots;
-    private int maxBasicTruckSlots;
-    private int maxReeferTruckSlots;
-    private int maxShipSlots;
 
-    public Port(String pNum, String pName, double pCapacity, boolean landing, Location location, ArrayList<Vehicle> vehicles, ArrayList<Container> containers, ArrayList<Trip> trips ,int maxTankerTruckSlots, int maxBasicTruckSlots, int maxReeferTruckSlots, int maxShipSlots
+
+    public Port(String pNum, String pName, double pCapacity, boolean landing, Location location, ArrayList<Vehicle> vehicles, ArrayList<Container> containers, ArrayList<Trip> trips
     ) {
         this.pNum = pNum;
         this.pName = pName;
@@ -37,10 +31,7 @@ public class Port {
         this.vehicles = vehicles;
         this.containers = containers;
         this.trips = trips;
-        this.maxTankerTruckSlots = maxTankerTruckSlots;
-        this.maxBasicTruckSlots = maxBasicTruckSlots;
-        this.maxReeferTruckSlots = maxReeferTruckSlots;
-        this.maxShipSlots = maxShipSlots;
+
     }
 
     public String getpNum() {
@@ -110,7 +101,7 @@ public class Port {
         containers.add(container);
     }
     public void removeContainer(Container container){
-        container.remove(container);
+        containers.remove(container);
     }
     public void addVehicle(Vehicle vehicle){
         vehicles.add(vehicle);
@@ -121,37 +112,6 @@ public class Port {
 
     public double getDistanceOtherPort(Port otherPort){
         return location.calculateDistance(otherPort.getLocation());
-    }
-
-    public void setMaxSlots(int maxTankerTruckSlots, int maxBasicTruckSlots, int maxReeferTruckSlots, int maxShipSlots) {
-        this.maxTankerTruckSlots = maxTankerTruckSlots;
-        this.maxBasicTruckSlots = maxBasicTruckSlots;
-        this.maxReeferTruckSlots = maxReeferTruckSlots;
-        this.maxShipSlots = maxShipSlots;
-    }
-
-    // Method to check if there are enough slots for a TankerTruck
-    public boolean checkTankerTruckSlots() {
-        int currentTankerTruckCount = countVehiclesOfType(TankerTruck.class);
-        return currentTankerTruckCount < maxTankerTruckSlots;
-    }
-
-    // Method to check  slots for a BasicTruck
-    public boolean checkBasicTruckSlots() {
-        int currentBasicTruckCount = countVehiclesOfType(BasicTruck.class);
-        return currentBasicTruckCount < maxBasicTruckSlots;
-    }
-
-    // Method to check slots for a ReeferTruck
-    public boolean checkReeferTruckSlots() {
-        int currentReeferTruckCount = countVehiclesOfType(ReeferTruck.class);
-        return currentReeferTruckCount < maxReeferTruckSlots;
-    }
-
-    // Method to check slots for a Ship
-    public boolean checkShipSlots() {
-        int currentShipCount = countVehiclesOfType(Ship.class);
-        return currentShipCount < maxShipSlots;
     }
 
 
@@ -190,13 +150,13 @@ public class Port {
         System.out.println("Vehicle added to the list: " + vehicleToAdd);
     }
 
-    public boolean isCapacityFull() {
-        if (containers.size() >= pCapacity) {
-            System.out.println("Alert: The port is full.");
-        } else {
-            System.out.println("The port is not full.");
+    public double getTotalContainerWeight() {
+        double totalWeight = 0.0;
+        for (Container container : containers) {
+            totalWeight += container.getConWeight();
         }
-        return false;
+        return totalWeight;
     }
+
 
 }

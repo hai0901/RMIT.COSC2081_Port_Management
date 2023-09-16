@@ -195,6 +195,7 @@ public abstract class Vehicle {
     }
 
 
+    public double getTotalContainerWeight() {
 
-
+    }
 }

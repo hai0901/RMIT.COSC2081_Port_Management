@@ -26,6 +26,7 @@ public abstract class Container {
         return conWeight;
     }
 
+
     public void setConNum(String conNum) {
         this.conNum = conNum;
     }
@@ -43,4 +44,6 @@ public abstract class Container {
                 ", conWeight=" + conWeight +
                 '}';
     }
+
+
 }
