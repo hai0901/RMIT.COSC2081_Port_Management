@@ -19,7 +19,8 @@ public abstract class User {
         String username = scanner.nextLine();
         System.out.println("Enter password: ");
         String password = scanner.nextLine();
-
+        System.out.print("Enter port: ");
+        String port = scanner.nextLine();
         return username + ", " + password;
     }
 
