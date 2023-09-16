@@ -1,8 +1,33 @@
-package User;
+package Interface;
 
+import User.*;
+import Port.*;
+import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class MainMenu {
+    private User currentLoginUser;
+    private Port currentPort;
+    static Scanner scanner = new Scanner(System.in);
+    public static boolean active = true;
+    // Getter and Setter
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+    private AdminInterface adminInterface;
+
+    // Constructor
+    public MainMenu(boolean active) throws FileNotFoundException {
+        this.active = active;
+        adminInterface = new AdminInterface();
+    }
+
+
     public void display() throws Exception {
         Scanner scanner = new Scanner(System.in);
         String action;
@@ -20,12 +45,11 @@ public class MainMenu {
                 actionNum = Byte.parseByte(action);
                 switch (actionNum) {
                     case 1 -> {
-                        PortManager.Login();
-                        PortManager.showMenu();
+                        System.out.println("manager");
                     }
                     case 2 -> {
-                        SystemAdmin.Login();
-                        SystemAdmin.showMenu();
+                        this.adminInterface.login();
+                        this.adminInterface.adminMenu();
                     }
                     case 3 -> {
                         System.out.println("Exiting program...");

@@ -13,16 +13,7 @@ public abstract class User {
 //    public abstract void Login();
 //    public abstract void showMenu();
 //    public abstract boolean validateLogin(String managerAccount);
-    public static String displayLogin() {
-        System.out.println("Enter username: ");
-        Scanner scanner = new Scanner(System.in);
-        String username = scanner.nextLine();
-        System.out.println("Enter password: ");
-        String password = scanner.nextLine();
-        System.out.print("Enter port: ");
-        String port = scanner.nextLine();
-        return username + ", " + password;
-    }
+
 
 
 
