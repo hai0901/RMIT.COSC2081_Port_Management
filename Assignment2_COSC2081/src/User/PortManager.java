@@ -55,7 +55,6 @@ public class PortManager extends User {
     }
 
     public static void showMenu() {
-
         String action;
         byte actionNum;
         boolean isRunning = true;
