@@ -7,67 +7,53 @@ s3979239, Nguyen Pham Tien Hai
 sXXXXXXX, Student Name
 sXXXXXXX, Student Name
 */
-
-
 import Container.*;
+import Port.*;
 import Vehicle.*;
-import  Port.*;
+
+
 
 public class Main {
     public static void main(String args[]) {
-        //create new instance of Port with Location
-        Port port;
-        Port port = new Port("P001", "Port 1", 1000, true, new Location(10, 10), null, null, null);
-        //create new instance of another Port with Location
-        Port port2;
-        port2 = new Port("P002", "Port 2", 1000, true, new Location(20, 20), null, null, null);
-        //calculate distance between 2 ports
-        double distance = port.getLocation().calculateDistance(port2.getLocation());
-        System.out.println("Distance between 2 ports: " + distance);
+        Container dry1 =  new DryStorage("C001", 15);
+        Container re1 =  new Refrigerated("C002", 20);
+        Container lq1 =  new Liquid("C003", 10);
+        Container oT =  new OpenTop("C004", 30);
+        Container oS =  new OpenSide("C004", 40);
 
+        Port port1 = new Port("P001","USA",1000,true,-17,70);
+        Port port2 = new Port("P002","VN",800,true,71,-29);
+        Port port3 = new Port("P003","China",2000,true,56,60);
+        Port port4 = new Port("P004","France",1100,false,-30,90);
+        Port port5 = new Port("P005","Itali",1110,false,-15,60);
 
+        Vehicle bs1 = new BasicTruck("tr-0001","basictruck1", 200, 800,null);
+        Vehicle rt1 = new ReeferTruck("tr-0002","reefertruck1", 400, 700,null);
+        Vehicle tt1 = new TankerTruck("tr-0003","tankertruck1", 150, 500,null);
+        Vehicle ship1 = new Ship("sh-0001","ship1", 2000, 5000,null);
 
-        // Creating 5 instances of BasicTruck
-         BasicTruck basicTruck1;
-         basicTruck1 = new BasicTruck("BasicTruck1", 100.0, 150.0, port, 0, "BT1", 5000);
-        BasicTruck basicTruck2;
-         basicTruck2 = new BasicTruck("BasicTruck2", 80.0, 150.0, port, 0, "BT2", 6000);
-        BasicTruck basicTruck3;
-         basicTruck3 = new BasicTruck("BasicTruck3", 90.0, 150.0, port2, 0, "BT3", 5500);
-        BasicTruck basicTruck4;
-         basicTruck4 = new BasicTruck("BasicTruck4", 110.0, 150.0, port2, 0, "BT4", 4500);
-        BasicTruck basicTruck5;
+        Trip trip1 = new Trip(bs1, "11/12/2023", "12/10/2023", port1, port2,null);
+        Trip trip2 = new Trip(bs1, "30/12/2023", "20/12/2023", port2, port3,null);
 
-         basicTruck5 = new BasicTruck("BasicTruck5", 95.0, 150.0, port2, 0, "BT5", 5200);
-
-        // Creating 5 instances of ReeferTruck
-        ReeferTruck reeferTruck1 = new ReeferTruck("ReeferTruck1", 120.0, 200.0, port, 0, "RT1", 4000);
-        ReeferTruck reeferTruck2 = new ReeferTruck("ReeferTruck2", 130.0, 200.0, port, 0, "RT2", 3800);
-        ReeferTruck reeferTruck3 = new ReeferTruck("ReeferTruck3", 140.0, 200.0, port, 0, "RT3", 4200);
-        ReeferTruck reeferTruck4 = new ReeferTruck("ReeferTruck4", 125.0, 200.0, port2, 0, "RT4", 4100);
-        ReeferTruck reeferTruck5 = new ReeferTruck("ReeferTruck5", 135.0, 200.0, port2, 0, "RT5", 3900);
-
-        // Creating 5 instances of TankerTruck
-        TankerTruck tankerTruck1 = new TankerTruck("TankerTruck1", 200.0, 300.0, port, 0, "TT1", 8000);
-        TankerTruck tankerTruck2 = new TankerTruck("TankerTruck2", 220.0, 300.0, port, 0, "TT2", 7500);
-        TankerTruck tankerTruck3 = new TankerTruck("TankerTruck3", 210.0, 300.0, port, 0, "TT3", 7800);
-        TankerTruck tankerTruck4 = new TankerTruck("TankerTruck4", 230.0, 300.0, port, 0, "TT4", 8200);
-        TankerTruck tankerTruck5 = new TankerTruck("TankerTruck5", 240.0, 300.0, port, 0, "TT5", 7900);
-
-        // Creating 5 instances of Ship
-        Ship ship1 = new Ship("Ship1", 5000.0, 8000.0, port, 0, "S1", 20000);
-        Ship ship2 = new Ship("Ship2", 5500.0, 8000.0, port, 0, "S2", 22000);
-        Ship ship3 = new Ship("Ship3", 4800.0, 8000.0, port, 0, "S3", 19000);
-        Ship ship4 = new Ship("Ship4", 5200.0, 8000.0, port, 0, "S4", 21000);
-        Ship ship5 = new Ship("Ship5", 5400.0, 8000.0, port, 0, "S5", 23000);
-
-
-        //Creating 5 instances of container
-        Container dry1 =  new DryStorage("1", 150);
-        Container re1 =  new Refrigerated("2", 200);
-        Container side1 = new OpenSide("3", 405);
-        Container top1 = new OpenTop("4", 375);
-        Container li1 = new Liquid("5", 653);
+        bs1.loadContainer(re1);
+        bs1.loadContainer(dry1);
+        bs1.loadContainer(oT);
+        bs1.loadContainer(oS);
+        System.out.println(bs1.countTotalContainer());
+        System.out.println(bs1.getAllContainer());
+        bs1.unloadContainer(re1);
+        bs1.unloadContainer(oT);
+        System.out.println(bs1.countTotalContainer());
+        System.out.println(bs1.getAllContainer());
+        System.out.println(bs1.getAllContainerWeight());
+        System.out.println(bs1);
+        System.out.println(trip1);
+        bs1.moveAbleNewPort(trip1);
+        System.out.println(bs1);
+        System.out.println(trip1);
+        bs1.moveAbleNewPort(trip2);
+        System.out.println(bs1);
+        System.out.println(trip2);
 
     }
 
