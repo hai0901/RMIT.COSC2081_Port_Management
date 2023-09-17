@@ -5,6 +5,7 @@ import User.PortManagerList;
 import User.User;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 import static User.PortManagerList.*;
@@ -32,60 +33,64 @@ public class PortManagerInterface {
     }
     // Login
     // Check if the manager account is exist in the file
-    public static boolean checkManager(String account) {
-        try (java.io.BufferedReader reader = new java.io.BufferedReader(new java.io.FileReader("Assignment2_COSC2081/src/User/manager_login_credential.txt"))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                if (line.equals(account)) {
+    public static boolean checkManager(String user) {
+        try {
+            int lineno = 0;
+            scanner = new Scanner(portManagerFile);
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                lineno++;
+                if (line.contains(user)) {
                     return true;
                 }
             }
-        } catch (java.io.IOException e) {
-            System.err.println(e.getMessage());
+
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found!");
         }
         return false;
     }
     // Verify login
-    public static boolean loginVerify(String account) {
-        for (PortManager manager : portManagerList.getPortManagersList()) {
-            if (checkManager(account) && account.equals("," + manager.getUsername() + "," + manager.getPassword()+ ",")) {
-                currentPortManager = new PortManager(manager.getUsername(), manager.getPassword(), manager.getPort());
+    private boolean verifyUserPas(String manager) {
+        for (PortManager pmanager : portManagerList.getPortManagersList()) {
+            if (checkManager(manager) && manager.equals(pmanager.getUsername()+","+pmanager.getPassword()+",")) {
+                this.currentPortManager = new PortManager(pmanager.getUsername(), pmanager.getPassword(), pmanager.getPort());
                 return true;
+                }
             }
-        }
         return false;
     }
 
+
     // get input from user
-    public static String getInput() {
+    public String getInput() {
         System.out.println("Enter username: ");
         Scanner scanner = new Scanner(System.in);
         String username = scanner.nextLine();
         System.out.println("Enter password: ");
         String password = scanner.nextLine();
-        System.out.println("Enter PortID (PNum): ");
-        String port = scanner.nextLine();
-        return username + "," + password + "," + port;
+        return username + "," + password;
     }
-    public static void login() throws Exception {
+
+    public void login() throws Exception {
 
         System.out.println("----------------MANAGER LOGIN PAGE----------------");
-        /* todo */
-        String account = getInput();
-        portManagerList.fromFileToList();
-        boolean flag = true;
-        while (flag) {
-            if (checkManager(getInput())) {
-                menuCustomer();
-                flag = false;
+        String portmanager = getInput();
+        portManagerList.createPortManagerList();
+        boolean isRunning = true;
+        while (isRunning) {
+            if (verifyUserPas(portmanager)) {
+                System.out.println("Login successful!");
+                display();
+                isRunning = false;
             } else {
                 System.out.println("Entered password or username is wrong please input again!");
-                account = getInput();
+                portmanager = getInput();
             }
         }
     }
     // view port information
-    public static void viewPortInformation() {
+    public void viewPortInformation() {
         System.out.println("Port information: ");
         System.out.println("Port name: " + currentPortManager.getPort());
         System.out.println("Port manager: " + currentPortManager.getUsername());

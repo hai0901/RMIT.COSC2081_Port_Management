@@ -29,7 +29,7 @@ public class MainMenu {
     public void display() throws Exception {
         int action;
         PortManager customer = new PortManager();
-        PortManagerInterface customerInterface = new PortManagerInterface();
+        PortManagerInterface portManagerInterface = new PortManagerInterface();
         Scanner scanner = new Scanner(System.in);
         boolean isRunning = true;
 
@@ -50,14 +50,14 @@ public class MainMenu {
                     break;
                 case 1:
                     /* Port Manager Login */
-                    PortManagerInterface.login();
+                    portManagerInterface.login();
                     break;
                 case 2:
                     /* Admin Login*/
                     this.adminInterface.login();
                     break;
                 case 3:
-                    customerInterface.createNewPortManager();
+                    portManagerInterface.createNewPortManager();
                     System.out.println("Your account has been successfully created.");
                     this.setActive(false);
                     break;

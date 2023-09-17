@@ -3,8 +3,8 @@ package User;
 import java.util.Scanner;
 
 public abstract class User {
-    private static String username;
-    private static String password;
+    private String username;
+    private String password;
     public User() {
     }
     public User(String username, String password) {
@@ -16,7 +16,7 @@ public abstract class User {
 //    public abstract boolean validateLogin(String managerAccount);
 
 
-    public static String getUsername() {
+    public String getUsername() {
         return username;
     }
 
@@ -24,7 +24,7 @@ public abstract class User {
         this.username = username;
     }
 
-    public static String getPassword() {
+    public String getPassword() {
         return password;
     }
 

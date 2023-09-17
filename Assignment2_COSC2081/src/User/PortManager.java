@@ -4,12 +4,14 @@ import java.util.Scanner;
 
 public class PortManager extends User {
     Scanner scanner = new Scanner(System.in);
-    private String port;
-    private String username;
-    private String password;
+    private String port = null;
+
+
     public PortManager() {
-        super();
-        this.port = "";
+    }
+    public PortManager(String username, String password) {
+        super(username, password);
+        this.port = "0";
     }
 
     public PortManager(String username, String password, String port) {
@@ -25,7 +27,18 @@ public class PortManager extends User {
         this.port = port;
     }
 
-
+    @Override
+    public String toString() {
+        return "PortManager{" +
+                "username='" + getUsername() + '\'' +
+                ",password='" + getPassword() + '\'' +
+                ",port='" + port + '\'' +
+                '}';
+    }
+    // display interface
+    public void displayPortManagerInterface() {
+        System.out.println(this.port);
+    }
 }
 /*    public static boolean validateLogin(String managerAccount) {
         try (BufferedReader reader = new BufferedReader(new FileReader("Assignment2_COSC2081/src/User/manager_login_credential.txt"))) {
