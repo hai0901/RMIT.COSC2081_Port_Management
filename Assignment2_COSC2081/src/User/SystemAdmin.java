@@ -1,19 +1,25 @@
 package User;
 
 import Port.*;
-
+import Interface.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Scanner;
 
 public class SystemAdmin extends User {
-    Scanner scanner = new Scanner(System.in);
+    private User admin;
     private Port port;
-    public SystemAdmin(String username, String password, Port port) {
+
+    public SystemAdmin(String username, String password, User admin, Port port) {
         super(username, password);
+        this.admin = admin;
         this.port = port;
     }
+
+    public static void login() {
+    }
+
     public Port getPort() {
         return port;
     }
@@ -22,6 +28,15 @@ public class SystemAdmin extends User {
         this.port = port;
     }
 
+    public User getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(User admin) {
+        this.admin = admin;
+    }
+}
+/*
     public static boolean validateLogin(String adminAccount) {
         try (BufferedReader reader = new BufferedReader(new FileReader("Assignment2_COSC2081/src/User/admin_login_credential.txt"))) {
             String line;
@@ -35,7 +50,40 @@ public class SystemAdmin extends User {
         }
         return false;
     }
+this port = user.getPort();
 
+1. get arraylist<User>
+while (username) {
+    for( User u : usersList) {
+        if (u.getPassword().equals(password)) {
+            login = true
+            return thisPort = u.getPort
+        }
+    }
+    if (login) {
+        System.out.println("Login successful!");
+        System.out.println("--------------------------------------------------");
+        isRunning = false;
+    } else {
+        System.out.println("Login failed!");
+        System.out.println("Please try again!");
+    }
+
+----------------------------------------------------------------------
+update port() {
+thisport.update
+}
+this.update
+this.deletlte
+
+if (for ) {
+        System.out.println("Login successful!");
+        System.out.println("--------------------------------------------------");
+        isRunning = false;
+    } else {
+        System.out.println("Login failed!");
+        System.out.println("Please try again!");
+    }
 
     public static void Login() {
         String action;
@@ -104,3 +152,4 @@ public class SystemAdmin extends User {
         }
     }
 }
+*/

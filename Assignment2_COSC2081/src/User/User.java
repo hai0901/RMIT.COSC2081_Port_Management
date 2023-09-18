@@ -5,7 +5,8 @@ import java.util.Scanner;
 public abstract class User {
     private String username;
     private String password;
-
+    public User() {
+    }
     public User(String username, String password) {
         this.username = username;
         this.password = password;
@@ -13,17 +14,6 @@ public abstract class User {
 //    public abstract void Login();
 //    public abstract void showMenu();
 //    public abstract boolean validateLogin(String managerAccount);
-    public static String displayLogin() {
-        System.out.println("Enter username: ");
-        Scanner scanner = new Scanner(System.in);
-        String username = scanner.nextLine();
-        System.out.println("Enter password: ");
-        String password = scanner.nextLine();
-
-        return username + ", " + password;
-    }
-
-
 
 
     public String getUsername() {

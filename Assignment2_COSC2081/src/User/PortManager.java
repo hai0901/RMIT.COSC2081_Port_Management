@@ -1,29 +1,46 @@
 package User;
 
-import Port.*;
-
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.Scanner;
 
 public class PortManager extends User {
     Scanner scanner = new Scanner(System.in);
-    private Port port;
+    private String port = null;
 
-    public PortManager(String username, String password, Port port) {
+
+    public PortManager() {
+    }
+    public PortManager(String username, String password) {
+        super(username, password);
+        this.port = "0";
+    }
+
+    public PortManager(String username, String password, String port) {
         super(username, password);
         this.port = port;
     }
-    public Port getPort() {
+
+    public String getPort() {
         return port;
     }
 
-    public void setPort(Port port) {
+    public void setPort(String port) {
         this.port = port;
     }
 
-    public static boolean validateLogin(String managerAccount) {
+    @Override
+    public String toString() {
+        return "PortManager{" +
+                "username='" + getUsername() + '\'' +
+                ",password='" + getPassword() + '\'' +
+                ",port='" + port + '\'' +
+                '}';
+    }
+    // display interface
+    public void displayPortManagerInterface() {
+        System.out.println(this.port);
+    }
+}
+/*    public static boolean validateLogin(String managerAccount) {
         try (BufferedReader reader = new BufferedReader(new FileReader("Assignment2_COSC2081/src/User/manager_login_credential.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
@@ -55,16 +72,15 @@ public class PortManager extends User {
     }
 
     public static void showMenu() {
-
         String action;
         byte actionNum;
         boolean isRunning = true;
         System.out.println("-------------------MANAGER MENU-------------------");
         while (isRunning) {
-            System.out.println("1. View Managers");
-            System.out.println("2. Update Manager");
-            System.out.println("3. Delete Manager");
-            System.out.println("4. View Manager");
+            System.out.println("1. View total gallons of fuel used");
+            System.out.println("2. View weight of containers");
+            System.out.println("3. View ships");
+            System.out.println("4. View trips");
             System.out.println("5. Exit Manager Menu");
             System.out.println("--------------------------------------------------");
             System.out.println("Enter your action: ");
@@ -89,3 +105,4 @@ public class PortManager extends User {
         }
     }
 }
+*/
