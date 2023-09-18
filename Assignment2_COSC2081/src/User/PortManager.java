@@ -71,13 +71,13 @@ public class PortManager extends User {
         }
     }
 
-    public static void showMenu() {
+    pub`lic static void showMenu() {
         String action;
         byte actionNum;
         boolean isRunning = true;
         System.out.println("-------------------MANAGER MENU-------------------");
         while (isRunning) {
-            System.out.println("1. View total gallons of fuel used");
+            System.out.println`("1. View total gallons of fuel used");
             System.out.println("2. View weight of containers");
             System.out.println("3. View ships");
             System.out.println("4. View trips");

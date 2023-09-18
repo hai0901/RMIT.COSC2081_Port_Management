@@ -38,7 +38,7 @@ public class AdminInterface {
         }
     }
     public static boolean validateLogin(String adminAccount) {
-        return adminAccount.equals("ad,admin");
+        return adminAccount.equals("ad,ad");
     }
     public static void adminMenu() {
         String action;

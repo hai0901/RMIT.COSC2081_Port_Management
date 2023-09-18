@@ -50,10 +50,11 @@ public class PortManagerInterface {
         }
         return false;
     }
+
     // Verify login
     private boolean verifyUserPas(String manager) {
         for (PortManager pmanager : portManagerList.getPortManagersList()) {
-            if (checkManager(manager) && manager.equals(pmanager.getUsername()+","+pmanager.getPassword()+",")) {
+            if (checkManager(manager) && manager.equals(pmanager.getUsername()+","+pmanager.getPassword())) {
                 this.currentPortManager = new PortManager(pmanager.getUsername(), pmanager.getPassword(), pmanager.getPort());
                 return true;
                 }
@@ -81,7 +82,7 @@ public class PortManagerInterface {
         while (isRunning) {
             if (verifyUserPas(portmanagerInput)) {
                 System.out.println("Login successful!");
-                display();
+                showMenu();
                 isRunning = false;
             } else {
                 System.out.println("Entered password or username is wrong please input again!");
@@ -95,48 +96,36 @@ public class PortManagerInterface {
         System.out.println("Port name: " + currentPortManager.getPort());
         System.out.println("Port manager: " + currentPortManager.getUsername());
     }
-    public static byte display() {
-        System.out.println("------------ MANAGER HOMEPAGE ------------");
-        System.out.println("0. Logout.");
-        System.out.println("1. View all your information.");
-        System.out.println("2. Update your information.");
-        System.out.println("3. Check your current membership.");
-        System.out.println("4. List all products.");
-        System.out.println("5. List product by price order.");
-        System.out.println("6. Create new order.");
-        System.out.println("7. View order information.");
-        System.out.println("8. View order history.");
-        System.out.println("You can choose action by entering a number: ");
-        return scanner.nextByte();
-    }
-
-    public static void menuCustomer() throws Exception {
-        boolean flag = true;
-        byte action;
-
-        while (flag) {
-            action = display();
-            switch (action) {
-                case 0:
-                    flag = false;
-                    // menu.display();
-                    break;
-                case 1:
-                    // viewPortInformation();
-                    break;
-                case 2:
-                case 3:
-                case 4:
-                case 5:
-                case 6:
-                case 7:
-                    System.out.println("Still develop");
-                    break;
-                case 8:
-                    System.out.println("This feature is developing!");
-                    break;
-                default:
-                    System.out.println("Please enter a number from 1 to 8! ");
+    public static void showMenu() {
+        String action;
+        byte actionNum;
+        boolean isRunning = true;
+        System.out.println("-------------------MANAGER MENU-------------------");
+        while (isRunning) {
+            System.out.println("1. View total gallons of fuel used");
+            System.out.println("2. View weight of containers");
+            System.out.println("3. View ships");
+            System.out.println("4. View trips");
+            System.out.println("5. Exit Manager Menu");
+            System.out.println("--------------------------------------------------");
+            System.out.println("Enter your action: ");
+            Scanner sc = new Scanner(System.in);
+            action = sc.nextLine();
+            try {
+                actionNum = Byte.parseByte(action);
+                switch (actionNum) {
+                    case 1 -> System.out.println("View Managers");
+                    case 2 -> System.out.println("Update Manager");
+                    case 3 -> System.out.println("Delete Manager");
+                    case 4 -> System.out.println("View Manager");
+                    case 5 -> {
+                        System.out.println("Exit Manager Menu");
+                        isRunning = false;
+                    }
+                    default -> System.out.println("Invalid Action!");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input! Please enter a number.");
             }
         }
     }
