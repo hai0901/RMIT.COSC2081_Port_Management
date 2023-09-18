@@ -75,17 +75,17 @@ public class PortManagerInterface {
     public void login() throws Exception {
 
         System.out.println("----------------MANAGER LOGIN PAGE----------------");
-        String portmanager = getInput();
+        String portmanagerInput = getInput();
         portManagerList.createPortManagerList();
         boolean isRunning = true;
         while (isRunning) {
-            if (verifyUserPas(portmanager)) {
+            if (verifyUserPas(portmanagerInput)) {
                 System.out.println("Login successful!");
                 display();
                 isRunning = false;
             } else {
                 System.out.println("Entered password or username is wrong please input again!");
-                portmanager = getInput();
+                portmanagerInput = getInput();
             }
         }
     }
