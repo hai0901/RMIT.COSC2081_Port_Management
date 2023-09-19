@@ -18,19 +18,7 @@ public class PortManagerInterface {
 
 
 
-    // create new port manager if not exist in list
-    public static void createNewPortManager() {
-        System.out.println("Enter username: ");
-        Scanner scanner = new Scanner(System.in);
-        String username = scanner.nextLine();
-        System.out.println("Enter password: ");
-        String password = scanner.nextLine();
-        System.out.println("Enter port: ");
-        String port = scanner.nextLine();
-        PortManager newportManager = new PortManager(username, password, port);
-        portManagerList.getPortManagersList().add(newportManager);
-        FileHandling.File.writeToFile("Assignment2_COSC2081/src/User/manager.txt", newportManager.toString());
-    }
+
     // Login
     // Check if the manager account is exist in the file
     public static boolean checkManager(String user) {
