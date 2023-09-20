@@ -78,7 +78,16 @@ public class AdminInterface {
                         portManagerList.createPortManagerList();
                         portManagerList.displayPortManagerList();
                     }
-                    case 2 -> System.out.println("Update Manager");
+                    case 2 -> {
+                        System.out.println("Update Manager");
+                        Scanner scanner = new Scanner(System.in);
+                        System.out.println("Enter PortManager's portID: ");
+                        String portID = scanner.next();
+                        //Port port =  FindPortbyID(portID);
+                        System.out.println("Enter PortInfo to update");
+                        //port.updatePortInfo();
+                    }
+
                     case 3 -> System.out.println("Delete Manager");
                     case 4 -> {
                         System.out.println("Create new Port Manager");

@@ -11,10 +11,6 @@ public abstract class User {
         this.username = username;
         this.password = password;
     }
-//    public abstract void Login();
-//    public abstract void showMenu();
-//    public abstract boolean validateLogin(String managerAccount);
-
 
     public String getUsername() {
         return username;

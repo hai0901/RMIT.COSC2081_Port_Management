@@ -43,23 +43,7 @@ public class PortManagerList {
 
     }
 
-    /*public void createPortManagerList() throws FileNotFoundException {
-        String port, username, password;
-        String line;
 
-        Scanner scanner = new Scanner(portManagerFile);
-
-        while (scanner.hasNext()) {
-            line = scanner.nextLine();
-            StringTokenizer st = new StringTokenizer(line, ",");
-            username = st.nextToken();
-            password = st.nextToken();
-            port = st.nextToken();
-            PortManager portManager = new PortManager(username, password, port);
-            portManagersList.add(portManager);
-        }
-        scanner.close();
-    } */
     // delete port manager by username
     public void deletePortManager() throws FileNotFoundException {
         PortManager result = null;
