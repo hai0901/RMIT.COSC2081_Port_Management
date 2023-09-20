@@ -21,7 +21,9 @@ public abstract class Truck extends Vehicle {
             }
         } else {
             System.out.println("This vehicle don't have current port");
+            System.out.println("This vehicle is on its trip");
             System.out.println("Set current port to arrival in trip");
+            System.out.println("-----------------------------------------------------");
         }
         return totalConsumption;
     }

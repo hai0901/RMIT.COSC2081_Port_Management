@@ -1,15 +1,14 @@
 package Port;
 
 import Vehicle.*;
+import Container.*;
 
-import java.awt.Container;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Port {
-    /****************
-     * Set variable.*
-     ****************/
-
     private String pNum; //port's numbe
     private String pName; //port's name
     private double pCapacity; //port's capacity
@@ -81,24 +80,38 @@ public class Port {
         return vehicles;
     }
 
-    public void addVehicle(Vehicle ve) {
-        this.vehicles.add(ve);
+    public void setVehicles(ArrayList<Vehicle> vehicles) {
+        this.vehicles = vehicles;
+    }
+
+    public void setTrips(ArrayList<Trip> trips) {
+        this.trips = trips;
     }
 
     public ArrayList<Trip> getTrips() {
         return trips;
     }
 
-    public void addTrip(Trip t) {
-        this.trips.add(t);
-    }
-
     public ArrayList<Container> getContainers() {
         return containers;
     }
 
+    public void setContainers(ArrayList<Container> containers) {
+        this.containers = containers;
+    }
+
     public void addContainers(Container con) {
         this.containers.add(con) ;
+    }
+
+    public void addVehicle(Vehicle ve) {
+        this.vehicles.add(ve);
+    }
+
+    public void addTrip(Trip t) {
+        if(t.getDeparturePort() == this || t.getArrivalPort() == this) {
+            this.trips.add(t);
+        } else System.out.println("This trip isn't relate to this port");
     }
 
     public void removeContainer(Container container){
@@ -117,13 +130,15 @@ public class Port {
         }
     }
 
-    public void removeVehicle(Trip trip){
+    public void removeTrip(Trip trip){
         for ( Trip tr : trips) {
             if ( tr == trip) {
                 this.trips.remove(tr);
+                break;
             }
         }
     }
+
 
     @Override
     public String toString() {
@@ -157,5 +172,97 @@ public class Port {
 
         double distance = earthRadius * c;
         return distance;
+    }
+
+    public void vehicleInPort() {
+        System.out.println("-------Vehicles In This Port-------");
+        for(Vehicle v: this.vehicles) {
+            System.out.println(v);
+        }
+        countVehicle();
+    }
+
+    public void containerInPort() {
+        System.out.println("-------Containers In This Port-------");
+        for(Container c : this.containers) {
+            System.out.println(c);
+        }
+        countContainer();
+    }
+
+    public void tripInPort() {
+        System.out.println("-------Trips In This Port-------");
+        for(Trip t : this.trips) {
+            System.out.println(t);
+        }
+        countTrip();
+    }
+
+    public double storingCapacity() {
+        double storeCap = 0;
+        for(Container c: this.containers) {
+            storeCap += c.getWeight();
+        }
+        return storeCap;
+    }
+
+    public boolean loadContainertoPort(Vehicle ve) {
+        ArrayList<Container> arrContainer = ve.getAllContainer();
+        double storingCapacity = storingCapacity();
+        if (this.getpCapacity()- storingCapacity - ve.getAllContainerWeight() >= 0) {
+            for (Container c: arrContainer) {
+                this.addContainers(c);
+                ve.unloadContainer(c);
+            }
+            return true;
+        } else {
+            System.out.println("This port is full of containers");
+            return false;
+        }
+    }
+
+    public void countContainer() {
+        System.out.printf("\nTotal Containers In Port: %s\n", this.containers.size());
+    }
+
+    public void countVehicle() {
+        System.out.printf("\nTotal Vehicles In Port: %s\n", this.vehicles.size());
+    }
+
+    public void countTrip() {
+        System.out.printf("\nTotal Trips In Port: %s\n", this.trips.size());
+    }
+
+    public static void listTripsInPortByDay(Port port, String targetDate) {
+        ArrayList<Trip> tripsByDay = new ArrayList<>();
+        for (Trip trip : port.getTrips()) {
+            if (trip.getArrivalDate().equals(targetDate) || trip.getDepartureDate().equals(targetDate)) {
+                tripsByDay.add(trip);
+            }
+        }
+        System.out.println("-------Trips In Port By Given Day-------");
+        System.out.println(tripsByDay);
+    }
+
+    public static void listTripsInPortByDayRange(Port port, String startDate, String endDate ) throws ParseException {
+        ArrayList<Trip> tripsByDayRange = new ArrayList<>();
+        SimpleDateFormat sdformat = new SimpleDateFormat("dd/mm/yyyy");
+
+        Date startFrom = sdformat.parse(startDate);
+        Date endBy = sdformat.parse(endDate);
+
+        for (Trip trip : port.getTrips()) {
+            Date tripDepartDate = sdformat.parse(trip.getDepartureDate());
+            Date tripAriveDate = sdformat.parse(trip.getArrivalDate());
+            if (tripDepartDate.compareTo(startFrom) >= 0 && tripDepartDate.compareTo(endBy) <= 0) {
+                tripsByDayRange.add(trip);
+            }
+            if (tripAriveDate.compareTo(startFrom) >= 0 && tripDepartDate.compareTo(endBy) <= 0) {
+                tripsByDayRange.add(trip);
+            }
+        }
+
+        System.out.println("-------Trips In Port By Day Range-------");
+        System.out.println(tripsByDayRange);
     }
 }

@@ -19,13 +19,13 @@ public class Main {
         Container re1 =  new Refrigerated("C002", 20);
         Container lq1 =  new Liquid("C003", 10);
         Container oT =  new OpenTop("C004", 30);
-        Container oS =  new OpenSide("C004", 40);
+        Container oS =  new OpenSide("C005", 40);
 
         Port port1 = new Port("P001","USA",1000,true,-17,70);
         Port port2 = new Port("P002","VN",800,true,71,-29);
         Port port3 = new Port("P003","China",2000,true,56,60);
         Port port4 = new Port("P004","France",1100,false,-30,90);
-        Port port5 = new Port("P005","Itali",1110,false,-15,60);
+        Port port5 = new Port("P005","Italy",1110,false,-15,60);
 
         Vehicle bs1 = new BasicTruck("tr-0001","basictruck1", 200, 800,null);
         Vehicle rt1 = new ReeferTruck("tr-0002","reefertruck1", 400, 700,null);
@@ -39,21 +39,37 @@ public class Main {
         bs1.loadContainer(dry1);
         bs1.loadContainer(oT);
         bs1.loadContainer(oS);
-        System.out.println(bs1.countTotalContainer());
-        System.out.println(bs1.getAllContainer());
+        ship1.loadContainer(re1);
+        ship1.loadContainer(dry1);
+        ship1.loadContainer(re1);
+        ship1.loadContainer(re1);
+        ship1.loadContainer(lq1);
+        ship1.loadContainer(oT);
+        ship1.loadContainer(oS);
+        ship1.loadContainer(oS);
+        ship1.loadContainer(lq1);
+        ship1.loadContainer(lq1);
         bs1.unloadContainer(re1);
-        bs1.unloadContainer(oT);
-        System.out.println(bs1.countTotalContainer());
-        System.out.println(bs1.getAllContainer());
         System.out.println(bs1.getAllContainerWeight());
         System.out.println(bs1);
         System.out.println(trip1);
+        System.out.println("----------------");
         bs1.moveAbleNewPort(trip1);
         System.out.println(bs1);
         System.out.println(trip1);
+        System.out.println("----------------");
         bs1.moveAbleNewPort(trip2);
         System.out.println(bs1);
         System.out.println(trip2);
+        System.out.println("----------------");
+        bs1.getAllSpecificContainerDetail();
+        ship1.getAllSpecificContainerDetail();
+        ship1.unloadContainer(oT);
+        ship1.getAllSpecificContainerDetail();
+        System.out.println("----------------");
+        bs1.unloadContainer(oT);
+        System.out.println(bs1);
+
 
     }
 

@@ -60,6 +60,22 @@ public abstract class Vehicle {
 
     public void setVehID(String vehID) { this.vehID = vehID; }
 
+    public ArrayList<Container> getCarryingContainers() {
+        return carryingContainers;
+    }
+
+    public void setCarryingContainers(ArrayList<Container> carryingContainers) {
+        this.carryingContainers = carryingContainers;
+    }
+
+    public double getCarryingCapacity() {
+        return carryingCapacity;
+    }
+
+    public void setCarryingCapacity(double carryingCapacity) {
+        this.carryingCapacity = carryingCapacity;
+    }
+
     public double getAllContainerWeight() {
         double totalCapacity = 0;
         for ( Container c : carryingContainers) {
@@ -76,8 +92,6 @@ public abstract class Vehicle {
         return carryingContainers.size();
     }
 
-    public abstract void loadContainer (Container co);
-
     public void unloadContainer (Container co) {
         boolean match = false;
         for( Container c : this.carryingContainers ) {
@@ -89,32 +103,34 @@ public abstract class Vehicle {
         }
         if (match) System.out.println("Unload container successfully");
         else System.out.println("This container hasn't loaded yet");
+        this.updateContainerCounts();
     }
 
-//    public void moveToPort(Trip trp) {
-//        if (trp.getStatus()) {
-//            System.out.println("Moved");
-//            this.setCurrentPort(trp.getArrivalPort());
-//        } else {
-//            System.out.println("Unmoved");
-//            this.setCurrentPort(trp.getDeparturePort());
-//        }
-//    }
-
     public void moveAbleNewPort(Trip tr) {
+        boolean landingAble = tr.getArrivalPort().isLanding();
+        boolean comingPort = tr.getArrivalPort().loadContainertoPort(this);
         double totalMovingConsumption = this.getTotalConsumption(tr.getArrivalPort());
-        if (this.getCurrentFuel() < totalMovingConsumption) {
+        if (this.getCurrentFuel() < totalMovingConsumption || landingAble || comingPort) {
             tr.setStatus(false);
             this.setCurrentPort(tr.getDeparturePort());
-            System.out.println("Cannot move");
+            tr.getArrivalPort().removeVehicle(this);
+            System.out.println("This vehicle doesn't have enough fuel");
         } else {
             tr.setStatus(true);
             this.setCurrentPort(tr.getArrivalPort());
+            tr.getArrivalPort().addVehicle(this);
             this.setCurrentFuel(this.getCurrentFuel() - totalMovingConsumption);
-            System.out.println("Sucessfull move");
+            System.out.println("Successfully move to arrival port");
         }
     }
 
+    public void refuel(double currentFuel) {
+        this.setCurrentFuel(currentFuel);
+    }
+
+    public abstract void getAllSpecificContainerDetail();
+    public abstract void updateContainerCounts();
+    public abstract void loadContainer (Container co);
     public abstract double getTotalConsumption(Port any);
 
     @Override
@@ -125,7 +141,6 @@ public abstract class Vehicle {
                 ", currentFuel=" + currentFuel +
                 ", capacityFuel=" + capacityFuel +
                 ", carryingCapacity=" + carryingCapacity +
-                ", currentPort=" + currentPort +
                 '}';
     }
 }
