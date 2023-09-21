@@ -19,11 +19,11 @@ public class File {
         }
     }
     // Read from file
-    public static void readFromFile(String fileName) {
+    public static void readFromFileAndCreateList(String fileName, ArrayList list) {
         try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                System.out.println(line);
+                list.add(line);
             }
         } catch (IOException e) {
             System.err.println(e.getMessage());

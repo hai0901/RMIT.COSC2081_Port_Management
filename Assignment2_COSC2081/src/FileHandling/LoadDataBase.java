@@ -1,19 +1,25 @@
 package FileHandling;
 
-import Container.*;
 import Vehicle.*;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import Port.*;
 
 public class LoadDataBase {
-    public static ArrayList<Container> containerList = new ArrayList<>();
+    public static ArrayList<String> containerList = new ArrayList<String>();
     public static ArrayList<Vehicle> vehicleList = new ArrayList<>();
     public static ArrayList<Port> portList = new ArrayList<>();
     public static ArrayList<Trip> tripList = new ArrayList<>();
+
+    private String fileName = "Assignment2_COSC2081/src/User/manager.txt";
     public static void createContainer() {
         // read file con.txt
         // 1 line = 1 container
         // add container to containerlist
+        File.readFromFileAndCreateList("Assignment2_COSC2081/src/User/manager.txt", containerList);
     }
     public static void createVehicle() {
         // read file veh.txt
