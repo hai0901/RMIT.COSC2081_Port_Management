@@ -6,6 +6,8 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Scanner;
+
 import Port.*;
 
 public class LoadDataBase {
@@ -14,27 +16,31 @@ public class LoadDataBase {
     public static ArrayList<Port> portList = new ArrayList<>();
     public static ArrayList<Trip> tripList = new ArrayList<>();
 
-    private String fileName = "Assignment2_COSC2081/src/User/manager.txt";
+
     public static void createContainer() {
         // read file con.txt
         // 1 line = 1 container
         // add container to containerlist
-        File.readFromFileAndCreateList("Assignment2_COSC2081/src/User/manager.txt", containerList);
+        File.readFromFileAndCreateList("Assignment2_COSC2081/src/container.txt", containerList);
+
     }
     public static void createVehicle() {
         // read file veh.txt
         // 1 line = 1 veh
         // add container to vehlist
+        File.readFromFileAndCreateList("Assignment2_COSC2081/src/vehicle.txt", vehicleList);
     }
     public static void createPort() {
         // read file port.txt
         // 1 line = 1 port
         // add container to portlist
+        File.readFromFileAndCreateList("Assignment2_COSC2081/src/port.txt", portList);
     }
     public static void createTrip() {
         // read file trip.txt
         // 1 line = 1 trip
         // add container to triplist
+        File.readFromFileAndCreateList("Assignment2_COSC2081/src/trip.txt", tripList);
     }
     public static void createAll() {
         createContainer();
@@ -56,4 +62,17 @@ public class LoadDataBase {
     //
     //    return null;
     //}
+public static void main(String[] args) {
+    createContainer();
+    Scanner scanner = new Scanner(System.in);
+    System.out.println("Enter container ID: ");
+    String containerId = scanner.nextLine();
+    // find container by containerId
+    for (String container : containerList) {
+        if (container.contains(containerId)) {
+            System.out.println(container);
+        }
+    }
+
+}
 }

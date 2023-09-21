@@ -12,12 +12,12 @@ public class PortManagerList {
     protected ArrayList<PortManager> portManagersList = new ArrayList<>();
     static Scanner scanner = new Scanner(System.in);
 
-    protected static final File portManagerFile = new File("Assignment2_COSC2081/src/User/manager.txt");
+    protected static final File portManagerFile = new File("Assignment2_COSC2081/src/manager.txt");
     private int i;
 
-    // get Manager File
+    //get Manager File
     public static File getPortManagerFile() {
-        return portManagerFile;
+       return portManagerFile;
     }
     // get Port Manager List
     public ArrayList<PortManager> getPortManagersList() {
@@ -70,6 +70,7 @@ public class PortManagerList {
             System.out.println(pmanager);
         }
     }
+
     public static void main(String[] args) throws FileNotFoundException {
         PortManagerList portManagerList = new PortManagerList();
         portManagerList.createPortManagerList();

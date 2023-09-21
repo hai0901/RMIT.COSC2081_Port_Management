@@ -11,7 +11,7 @@ import java.util.Scanner;
 import static User.PortManagerList.*;
 
 public class PortManagerInterface {
-    protected final static File portManagerFile = new java.io.File("Assignment2_COSC2081/src/User/manager.txt");
+    protected final static File portManagerFile = new java.io.File("Assignment2_COSC2081/src/manager.txt");
     static Scanner scanner = new Scanner(System.in);
     private static PortManager currentPortManager = new PortManager();
     private static PortManagerList portManagerList = new PortManagerList();
@@ -79,7 +79,7 @@ public class PortManagerInterface {
         }
     }
     // view port information
-    public void viewPortInformation() {
+    public static void viewPortInformation() {
         System.out.println("Port information: ");
         System.out.println("Port name: " + currentPortManager.getPort());
         System.out.println("Port manager: " + currentPortManager.getUsername());
@@ -93,7 +93,7 @@ public class PortManagerInterface {
             System.out.println("1. View total gallons of fuel used");
             System.out.println("2. View weight of containers");
             System.out.println("3. View ships");
-            System.out.println("4. View trips");
+            System.out.println("4. View port information");
             System.out.println("5. Exit Manager Menu");
             System.out.println("--------------------------------------------------");
             System.out.println("Enter your action: ");
@@ -105,7 +105,10 @@ public class PortManagerInterface {
                     case 1 -> System.out.println("View Managers");
                     case 2 -> System.out.println("Update Manager");
                     case 3 -> System.out.println("Delete Manager");
-                    case 4 -> System.out.println("View Manager");
+                    case 4 -> {
+                        System.out.println("View Port Information");
+                        viewPortInformation();
+                    }
                     case 5 -> {
                         System.out.println("Exit Manager Menu");
                         isRunning = false;
