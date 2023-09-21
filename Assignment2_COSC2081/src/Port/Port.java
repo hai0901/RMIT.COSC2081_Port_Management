@@ -209,7 +209,7 @@ public class Port {
     public boolean loadContainertoPort(Vehicle ve) {
         ArrayList<Container> arrContainer = ve.getAllContainer();
         double storingCapacity = storingCapacity();
-        if (this.getpCapacity()- storingCapacity - ve.getAllContainerWeight() >= 0) {
+        if (this.getpCapacity() - storingCapacity - ve.getAllContainerWeight() >= 0) {
             for (Container c: arrContainer) {
                 this.addContainers(c);
                 ve.unloadContainer(c);
