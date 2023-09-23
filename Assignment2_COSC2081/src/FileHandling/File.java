@@ -21,6 +21,10 @@ import static java.awt.SystemColor.text;
 
 public class File {
     public static String tripData = null;
+    public static String portData = null;
+    public static String vehData = null;
+    public static String conData = null;
+
 
 
     // Write to file
@@ -52,7 +56,7 @@ public class File {
                     e.printStackTrace();
                 }
             }
-        }, minutesToKeep * 20 * 1000); // set timmer : 10sec
+        }, minutesToKeep * 70 * 1000); // set timmer : 10sec
     }
 
     private static void removeLineFromFile(String fileName, String lineToRemove) throws IOException {
@@ -99,20 +103,21 @@ public class File {
         BufferedWriter writer4 = new BufferedWriter(new FileWriter("Assignment2_COSC2081/src/DataSource/otContainer.txt", false));
         BufferedWriter writer5 = new BufferedWriter(new FileWriter("Assignment2_COSC2081/src/DataSource/osContainer.txt", false));
         for (Container c : list) {
+            conData = c.getId() + "," + c.getWeight();
             if (c instanceof DryStorage) {
-                writer1.write(c.getId() + "," + c.getWeight());
+                writer1.write(conData);
                 writer1.newLine();
             } else if (c instanceof Refrigerated) {
-                writer2.write(c.getId() + "," + c.getWeight());
+                writer2.write(conData);
                 writer2.newLine();
             } else if (c instanceof Liquid) {
-                writer3.write(c.getId() + "," + c.getWeight());
+                writer3.write(conData);
                 writer3.newLine();
             } else if (c instanceof OpenTop) {
-                writer4.write(c.getId() + "," + c.getWeight());
+                writer4.write(conData);
                 writer4.newLine();
             } else {
-                writer5.write(c.getId() + "," + c.getWeight());
+                writer5.write(conData);
                 writer5.newLine();
             }
         }
@@ -125,7 +130,8 @@ public class File {
     public static void fileWritePort(ArrayList<Port> list) throws IOException {
         BufferedWriter writer = new BufferedWriter(new FileWriter("Assignment2_COSC2081/src/DataSource/port.txt", false));
         for (Port port : list) {
-            writer.write(port.getpNum() + "," + port.getpName() + "," + port.getpCapacity() + "," + port.getLatitude() + "," + port.getLongitude());
+            portData = port.getpNum() + "," + port.getpName() + "," + port.getpCapacity() + "," + port.getLatitude() + "," + port.getLongitude();
+            writer.write(portData);
             writer.newLine();
         }
         writer.close();
@@ -143,17 +149,18 @@ public class File {
             } else {
                 PortID = vehicle.getCurrentPort().getpNum();
             }
+            vehData = vehicle.getVehID() + "," + vehicle.getName() + "," + vehicle.getCurrentFuel() + "," + vehicle.getCapacityFuel() + "," + PortID;
             if (vehicle instanceof BasicTruck) {
-                writer1.write(vehicle.getVehID() + "," + vehicle.getName() + "," + vehicle.getCurrentFuel() + "," + vehicle.getCapacityFuel() + "," + PortID);
+                writer1.write(vehData);
                 writer1.newLine();
             } else if (vehicle instanceof ReeferTruck) {
-                writer2.write(vehicle.getVehID() + "," + vehicle.getName() + "," + vehicle.getCurrentFuel() + "," + vehicle.getCapacityFuel() + "," + PortID);
+                writer2.write(vehData);
                 writer2.newLine();
             } else if (vehicle instanceof TankerTruck) {
-                writer3.write(vehicle.getVehID() + "," + vehicle.getName() + "," + vehicle.getCurrentFuel() + "," + vehicle.getCapacityFuel() + "," + PortID);
+                writer3.write(vehData);
                 writer3.newLine();
             } else {
-                writer4.write(vehicle.getVehID() + "," + vehicle.getName() + "," + vehicle.getCurrentFuel() + "," + vehicle.getCapacityFuel() + "," + PortID);
+                writer4.write(vehData);
                 writer4.newLine();
             }
         }
