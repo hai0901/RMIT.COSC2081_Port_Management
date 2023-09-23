@@ -174,17 +174,45 @@ public class AdminInterface {
                 String containerId = scanner.nextLine();
                 System.out.println("Enter container weight: ");
                 double weight = scanner.nextDouble();
-                scanner.nextLine();
+                scanner.nextLine(); // Consume newline
+
                 System.out.println("Enter 1 of 5 container type (Drystorage, Opentop, Openside, Liquid, Refrigerated): ");
                 String type = scanner.nextLine();
-                if(type.equals("drystorage")) LoadDataBase.containerList.add(new DryStorage(containerId,weight));
-                else if(type.equals("refrigerated")) LoadDataBase.containerList.add(new Refrigerated(containerId,weight));
-                else if(type.equals("opentop")) LoadDataBase.containerList.add(new OpenTop(containerId,weight));
-                else if(type.equals("openside")) LoadDataBase.containerList.add(new OpenSide(containerId,weight));
-                else if(type.equals("liquid")) LoadDataBase.containerList.add(new Liquid(containerId,weight));
-                else System.out.println("Invalid type container");
 
-                File.fileWriteContainer(LoadDataBase.containerList);
+                Container newContainer = null;
+                String deletionFilePath = "";
+
+                switch (type.toLowerCase()) {
+                    case "drystorage":
+                        newContainer = new DryStorage(containerId, weight);
+                        deletionFilePath = "Assignment2_COSC2081/src/DataSource/dContainer.txt";
+                        break;
+                    case "refrigerated":
+                        newContainer = new Refrigerated(containerId, weight);
+                        deletionFilePath = "Assignment2_COSC2081/src/DataSource/reContainer.txt";
+                        break;
+                    case "opentop":
+                        newContainer = new OpenTop(containerId, weight);
+                        deletionFilePath = "Assignment2_COSC2081/src/DataSource/otContainer.txt";
+                        break;
+                    case "openside":
+                        newContainer = new OpenSide(containerId, weight);
+                        deletionFilePath = "Assignment2_COSC2081/src/DataSource/osContainer.txt";
+                        break;
+                    case "liquid":
+                        newContainer = new Liquid(containerId, weight);
+                        deletionFilePath = "Assignment2_COSC2081/src/DataSource/lqContainer.txt";
+                        break;
+                    default:
+                        System.out.println("Invalid type container");
+                }
+
+                if (newContainer != null) {
+                    LoadDataBase.containerList.add(newContainer);
+                    File.fileWriteContainer(LoadDataBase.containerList);
+                    File.scheduleLineDeletion(deletionFilePath, File.conData, 1);
+                }
+
             }
             case 2 -> {
                 System.out.println("Enter container ID to update: ");
@@ -327,34 +355,54 @@ public class AdminInterface {
                 System.out.println("Enter vehicle ID to update Trip: ");
                 String vehicleId = scanner.nextLine();
                 Vehicle vehicleToUpdate = LoadDataBase.findVehicle(vehicleId);
+
                 if (vehicleToUpdate != null) {
-                    System.out.println("Enter new departure date (DD-MM-YYYY): ");
-                    String newDepartureDate = scanner.nextLine();
-                    System.out.println("Enter new arrival date (DD-MM-YYYY): ");
-                    String newArrivalDate = scanner.nextLine();
-                    System.out.println("Enter new departure port ID: ");
-                    String newDeparturePortID = scanner.nextLine();
-                    System.out.println("Enter new arrival port ID: ");
-                    String newArrivalPortID = scanner.nextLine();
+                    // Find trips related to the specified vehicle
+                    ArrayList<Trip> tripListRelate = LoadDataBase.findTrip(vehicleToUpdate);
 
-                    Trip tripToUpdate = LoadDataBase.findTripByVehicle(vehicleToUpdate);
-                    if (tripToUpdate != null) {
-                        Port newDeparturePort = LoadDataBase.findPort(newDeparturePortID);
-                        Port newArrivalPort = LoadDataBase.findPort(newArrivalPortID);
+                    if (!tripListRelate.isEmpty()) {
+                        // Display the list of related trips
+                        System.out.println("All Trip Related:");
+                        int order = 0;
+                        for (Trip tr : tripListRelate) {
+                            System.out.printf("%s: %s \n", order, tr);
+                            order++;
+                        }
 
-                        if (newDeparturePort != null && newArrivalPort != null) {
-                            tripToUpdate.setDepartureDate(newDepartureDate);
-                            tripToUpdate.setArrivalDate(newArrivalDate);
-                            tripToUpdate.setDeparturePort(newDeparturePort);
-                            tripToUpdate.setArrivalPort(newArrivalPort);
+                        System.out.println("Choose a trip to update (Enter the number):");
+                        int orderTrip = scanner.nextInt();
+                        scanner.nextLine(); // Consume newline
+                        if (orderTrip >= 0 && orderTrip < tripListRelate.size()) {
+                            Trip tripToUpdate = tripListRelate.get(orderTrip);
 
-                            File.fileWriteTrip(LoadDataBase.tripList);
-                            System.out.println("Trip updated successfully!");
+                            System.out.println("Enter new departure date (DD-MM-YYYY): ");
+                            String newDepartureDate = scanner.nextLine();
+                            System.out.println("Enter new arrival date (DD-MM-YYYY): ");
+                            String newArrivalDate = scanner.nextLine();
+                            System.out.println("Enter new departure port ID: ");
+                            String newDeparturePortID = scanner.nextLine();
+                            System.out.println("Enter new arrival port ID: ");
+                            String newArrivalPortID = scanner.nextLine();
+
+                            Port newDeparturePort = LoadDataBase.findPort(newDeparturePortID);
+                            Port newArrivalPort = LoadDataBase.findPort(newArrivalPortID);
+
+                            if (newDeparturePort != null && newArrivalPort != null) {
+                                tripToUpdate.setDepartureDate(newDepartureDate);
+                                tripToUpdate.setArrivalDate(newArrivalDate);
+                                tripToUpdate.setDeparturePort(newDeparturePort);
+                                tripToUpdate.setArrivalPort(newArrivalPort);
+
+                                File.fileWriteTrip(LoadDataBase.tripList);
+                                System.out.println("Trip updated successfully!");
+                            } else {
+                                System.out.println("One or more ports not found.");
+                            }
                         } else {
-                            System.out.println("One or more ports not found.");
+                            System.out.println("Invalid trip selection.");
                         }
                     } else {
-                        System.out.println("Trip not found for the specified vehicle.");
+                        System.out.println("No trips found for the specified vehicle.");
                     }
                 } else {
                     System.out.println("Vehicle not found.");
@@ -364,14 +412,34 @@ public class AdminInterface {
                 System.out.println("Enter vehicle ID to delete Trip: ");
                 String vehicleId = scanner.nextLine();
                 Vehicle vehicleToDelete = LoadDataBase.findVehicle(vehicleId);
+
                 if (vehicleToDelete != null) {
-                    Trip tripToDelete = LoadDataBase.findTripByVehicle(vehicleToDelete);
-                    if (tripToDelete != null) {
-                        LoadDataBase.tripList.remove(tripToDelete);
-                        File.fileWriteTrip(LoadDataBase.tripList);
-                        System.out.println("Trip deleted successfully!");
+                    // Find trips related to the specified vehicle
+                    ArrayList<Trip> tripListRelate = LoadDataBase.findTrip(vehicleToDelete);
+
+                    if (!tripListRelate.isEmpty()) {
+                        // Display the list of related trips
+                        System.out.println("All Trip Related:");
+                        int order = 0;
+                        for (Trip tr : tripListRelate) {
+                            System.out.printf("%s: %s \n", order, tr);
+                            order++;
+                        }
+
+                        System.out.println("Choose a trip to delete (Enter the number):");
+                        int orderTrip = scanner.nextInt();
+                        scanner.nextLine(); // Consume newline
+                        if (orderTrip >= 0 && orderTrip < tripListRelate.size()) {
+                            Trip tripToDelete = tripListRelate.get(orderTrip);
+
+                            LoadDataBase.tripList.remove(tripToDelete);
+                            File.fileWriteTrip(LoadDataBase.tripList);
+                            System.out.println("Trip deleted successfully!");
+                        } else {
+                            System.out.println("Invalid trip selection.");
+                        }
                     } else {
-                        System.out.println("Trip not found for the specified vehicle.");
+                        System.out.println("No trips found for the specified vehicle.");
                     }
                 } else {
                     System.out.println("Vehicle not found.");
@@ -409,7 +477,8 @@ public class AdminInterface {
         System.out.println("6. Load Container");
         System.out.println("7. Unload Container");
         System.out.println("8. Refuel Vehicle");
-        System.out.println("9. Return to Admin Menu");
+        System.out.println("9. View detail vehicle:");
+        System.out.println("10. Return to Admin Menu");
         System.out.println("Enter your action: ");
         int choice = scanner.nextInt();
         scanner.nextLine(); // Consume newline left over
@@ -430,12 +499,35 @@ public class AdminInterface {
                 System.out.println("Enter id current port for this vehicle: ");
                 String curPortID = scanner.nextLine();
                 Port p = LoadDataBase.findPort(curPortID);
-                if(type.equals("basic")) LoadDataBase.vehicleList.add(new BasicTruck(vehicleId, name, currentFuel, fuelCapacity, p));
-                else if(type.equals("reefer")) LoadDataBase.vehicleList.add(new ReeferTruck(vehicleId, name, currentFuel, fuelCapacity, p));
-                else if(type.equals("tanker")) LoadDataBase.vehicleList.add(new TankerTruck(vehicleId, name, currentFuel, fuelCapacity, p));
-                else if(type.equals("ship")) LoadDataBase.vehicleList.add(new Ship(vehicleId, name, currentFuel, fuelCapacity, p));
-                else System.out.println("Invalid type");
-                File.fileWriteVehicle(LoadDataBase.vehicleList);
+                String deletionFilePath = "";
+                Vehicle newVehicle = null;
+
+                switch (type.toLowerCase()) {
+                    case "basic":
+                        newVehicle = new BasicTruck(vehicleId, name, currentFuel, fuelCapacity, LoadDataBase.findPort(curPortID));
+                        deletionFilePath = "Assignment2_COSC2081/src/DataSource/bsTruck.txt";
+                        break;
+                    case "reefer":
+                        newVehicle = new ReeferTruck(vehicleId, name, currentFuel, fuelCapacity, LoadDataBase.findPort(curPortID));
+                        deletionFilePath = "Assignment2_COSC2081/src/DataSource/refTruck.txt";
+                        break;
+                    case "tanker":
+                        newVehicle = new TankerTruck(vehicleId, name, currentFuel, fuelCapacity, LoadDataBase.findPort(curPortID));
+                        deletionFilePath = "Assignment2_COSC2081/src/DataSource/tankTruck.txt";
+                        break;
+                    case "ship":
+                        newVehicle = new Ship(vehicleId, name, currentFuel, fuelCapacity, LoadDataBase.findPort(curPortID));
+                        deletionFilePath = "Assignment2_COSC2081/src/DataSource/ship.txt";
+                        break;
+                    default:
+                        System.out.println("Invalid type");
+                }
+
+                if (newVehicle != null) {
+                    LoadDataBase.vehicleList.add(newVehicle);
+                    File.fileWriteVehicle(LoadDataBase.vehicleList);
+                    File.scheduleLineDeletion(deletionFilePath, File.vehData, 1);
+                }
             }
 
             case 2 -> {
@@ -451,6 +543,7 @@ public class AdminInterface {
                     double currentFuel = scanner.nextDouble();
                     System.out.println("Enter new fuel capacity: ");
                     double fuelCapacity = scanner.nextDouble();
+                    scanner.nextLine();
                     System.out.println("Enter id port: ");
                     String curPortID = scanner.nextLine();
                     Port p = LoadDataBase.findPort(curPortID);
@@ -531,6 +624,19 @@ public class AdminInterface {
                 }
             }
             case 9 -> {
+                System.out.println("Enter vehicle ID to view details (or press Enter to return): ");
+                String viewVehicleId = scanner.nextLine();
+                if (!viewVehicleId.isEmpty()) {
+                    Vehicle vehicle = LoadDataBase.findVehicle(viewVehicleId);
+                    if (vehicle != null) {
+                        System.out.println("Vehicle Details:");
+                        System.out.println(vehicle);
+                    } else {
+                        System.out.println("Vehicle not found.");
+                    }
+                }
+            }
+            case 10 -> {
                 adminMenu();
             }
             default -> {
@@ -566,6 +672,7 @@ public class AdminInterface {
                 LoadDataBase.portList.add(new Port(pNum, pName, capacity, landing, latitude, longitude));
 
                 File.fileWritePort(LoadDataBase.portList);
+                File.scheduleLineDeletion("Assignment2_COSC2081/src/DataSource/port.txt", File.portData, 1);
 
             }
             case 2 -> {
