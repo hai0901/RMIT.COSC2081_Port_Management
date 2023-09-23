@@ -3,4 +3,4 @@ tr-0012,tankertruck2,150.0,500.0,null
 tr-0013,tankertruck3,80.0,500.0,null
 tr-0014,tankertruck4,250.0,500.0,null
 tr-0015,tankertruck5,350.0,500.0,null
-tr-0030,concuto,80.0,800.0,P003
+
