@@ -1,0 +1,5 @@
+sh-0001,ship1,200,5000,null
+sh-0002,ship2,3000,5000,null
+sh-0003,ship3,2500,5000,null
+sh-0004,ship4,600,5000,null
+sh-0005,ship5,1200,5000,null

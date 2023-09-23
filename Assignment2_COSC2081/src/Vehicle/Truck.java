@@ -27,4 +27,23 @@ public abstract class Truck extends Vehicle {
         }
         return totalConsumption;
     }
+
+    @Override
+    public void moveAbleNewPort(Trip tr) {
+        boolean landingAble = tr.getArrivalPort().isLanding();
+        double totalMovingConsumption = this.getTotalConsumption(tr.getArrivalPort());
+        System.out.println(totalMovingConsumption);
+        if (this.getCurrentFuel() > totalMovingConsumption && landingAble && tr.getArrivalPort().availableToAddVehicle(tr.getVehicle())) {
+            tr.setStatus(true);
+            this.setCurrentPort(tr.getArrivalPort());
+            tr.getArrivalPort().addVehicle(this);
+            this.setCurrentFuel(this.getCurrentFuel() - totalMovingConsumption);
+            System.out.println("Successfully move to arrival port");
+        } else {
+            tr.setStatus(false);
+            this.setCurrentPort(tr.getDeparturePort());
+            tr.getArrivalPort().removeVehicle(this);
+            System.out.println("This vehicle doesn't have enough fuel or port doesn't have that ability");
+        }
+    }
 }

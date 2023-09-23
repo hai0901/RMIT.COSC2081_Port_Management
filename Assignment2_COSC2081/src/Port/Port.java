@@ -3,10 +3,13 @@ package Port;
 import Vehicle.*;
 import Container.*;
 
+import java.io.FileNotFoundException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Scanner;
 
 public class Port {
     private String pNum; //port's numbe
@@ -100,39 +103,76 @@ public class Port {
         this.containers = containers;
     }
 
-    public void addContainers(Container con) {
-        this.containers.add(con) ;
+    public boolean addContainers(Container con) {
+        if(this.storingCapacity() + con.getWeight() > this.pCapacity){
+            System.out.println("Exceed maximum capacity to add container");
+            return false;
+        } else {
+            this.containers.add(con);
+            return true;
+        }
     }
 
     public void addVehicle(Vehicle ve) {
-        this.vehicles.add(ve);
+        if( ve instanceof Truck && this.landing) {
+            if(duplicateVe(ve)) {
+                System.out.println("This truck already in this port");
+            } else {
+                this.vehicles.add(ve);
+                ve.setCurrentPort(this);
+            }
+        } else if (ve instanceof Ship) {
+            if(duplicateVe(ve)) {
+                System.out.println("This ship already in this port");
+            } else {
+                this.vehicles.add(ve);
+                ve.setCurrentPort(this);
+            }
+        } else {
+            System.out.println("Error while adding vehicle");
+        }
+    }
+
+    public boolean availableToAddVehicle(Vehicle vehicle) {
+        if(this.storingCapacity() + vehicle.getAllContainerWeight() > this.pCapacity){
+            System.out.println("Exceed maximum capacity to add vehicle");
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public boolean duplicateVe(Vehicle ve) {
+        return this.vehicles.contains(ve);
     }
 
     public void addTrip(Trip t) {
-        if(t.getDeparturePort() == this || t.getArrivalPort() == this) {
+        if(t.getDeparturePort().equals(this) || t.getArrivalPort().equals(this)) {
             this.trips.add(t);
         } else System.out.println("This trip isn't relate to this port");
     }
 
     public void removeContainer(Container container){
-        for ( Container co : containers) {
-            if ( co == container) {
+        for (Container co : containers) {
+            if (co.equals(container)) {
                 this.containers.remove(co);
+                break;
             }
         }
     }
 
     public void removeVehicle(Vehicle vehicle){
         for ( Vehicle ve : vehicles) {
-            if ( ve == vehicle) {
+            if (ve.equals(vehicle)) {
                 this.vehicles.remove(ve);
+                break;
             }
         }
     }
 
     public void removeTrip(Trip trip){
-        for ( Trip tr : trips) {
-            if ( tr == trip) {
+        for (Trip tr : trips) {
+            if (tr.equals(trip)) {
                 this.trips.remove(tr);
                 break;
             }
@@ -203,10 +243,13 @@ public class Port {
         for(Container c: this.containers) {
             storeCap += c.getWeight();
         }
+        for(Vehicle v: this.vehicles) {
+            storeCap += v.getAllContainerWeight();
+        }
         return storeCap;
     }
 
-    public boolean loadContainertoPort(Vehicle ve) {
+    /*public boolean loadContainerToPort(Vehicle ve) {
         ArrayList<Container> arrContainer = ve.getAllContainer();
         double storingCapacity = storingCapacity();
         if (this.getpCapacity() - storingCapacity - ve.getAllContainerWeight() >= 0) {
@@ -219,7 +262,7 @@ public class Port {
             System.out.println("This port is full of containers");
             return false;
         }
-    }
+    }*/
 
     public void countContainer() {
         System.out.printf("\nTotal Containers In Port: %s\n", this.containers.size());
@@ -265,4 +308,44 @@ public class Port {
         System.out.println("-------Trips In Port By Day Range-------");
         System.out.println(tripsByDayRange);
     }
+
+
+    public static List<Port> loadPortsFromFile() throws FileNotFoundException {
+        java.io.File file = new java.io.File("./DataSource/port.txt");
+        Scanner scanner = new Scanner(file);
+        List<Port> ports = new ArrayList<>();
+
+        while(scanner.hasNextLine()) {
+            String line = scanner.nextLine();
+            String[] parts = line.split(",");
+            Port port = new Port(parts[0], parts[1], Double.parseDouble(parts[2]), Boolean.parseBoolean(parts[3]), Double.parseDouble(parts[4]), Double.parseDouble(parts[5]));
+            ports.add(port);
+        }
+        scanner.close();
+        return ports;
+    }
+
+    public static double getTotalFuelUsed(List<Port> ports) {
+        double totalFuel = 0;
+        for(Port port : ports) {
+            totalFuel += port.getpCapacity();  // Using getpCapacity() method
+        }
+        return totalFuel;
+    }
+
+    public static String getAllPortNames(List<Port> ports) {
+        StringBuilder sb = new StringBuilder();
+        for(Port port : ports) {
+            sb.append(port.getpName()).append(", ");  // Using getpName() method
+        }
+        return sb.toString();
+    }
+
+    public void getAllContainerDetailInPort() {
+        for (Container c: this.containers) {
+            System.out.println(c);
+        }
+        countContainer();
+    }
+
 }

@@ -122,11 +122,17 @@ public class Ship extends Vehicle {
     }
 
     @Override
-    public void loadContainer(Container co) {
-        this.getAllContainer().add(co);
-        System.out.println("Load container successfully");
-        this.updateContainerCounts();
+    public void loadContainer(Container container) {
+        // Check if the ship can carry the new container based on its weight
+        if (this.getCarryingCapacity() >= container.getWeight()) {
+            this.getCarryingContainers().add(container);
+            this.setCarryingCapacity(this.getCarryingCapacity() - container.getWeight());
+        } else {
+            // Print an error message if the ship cannot carry the container
+            System.out.println("The container exceeds the ship's carrying capacity.");
+        }
     }
+
 
     @Override
     public double getTotalConsumption(Port any) {
@@ -142,5 +148,23 @@ public class Ship extends Vehicle {
             System.out.println("-----------------------------------------------------");
         }
         return totalConsumption;
+    }
+
+    @Override
+    public void moveAbleNewPort(Trip tr) {
+        double totalMovingConsumption = this.getTotalConsumption(tr.getArrivalPort());
+        System.out.println(totalMovingConsumption);
+        if (this.getCurrentFuel() > totalMovingConsumption && tr.getArrivalPort().availableToAddVehicle(tr.getVehicle())) {
+            tr.setStatus(true);
+            this.setCurrentPort(tr.getArrivalPort());
+            tr.getArrivalPort().addVehicle(this);
+            this.setCurrentFuel(this.getCurrentFuel() - totalMovingConsumption);
+            System.out.println("Successfully move to arrival port");
+        } else {
+            tr.setStatus(false);
+            this.setCurrentPort(tr.getDeparturePort());
+            tr.getArrivalPort().removeVehicle(this);
+            System.out.println("This vehicle doesn't have enough fuel or port doesn't have that ability");
+        }
     }
 }

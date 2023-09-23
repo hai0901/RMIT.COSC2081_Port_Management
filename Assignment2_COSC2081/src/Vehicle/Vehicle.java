@@ -3,8 +3,9 @@ package Vehicle;
 import Container.*;
 import Port.*;
 
-import java.io.IOError;
+import java.io.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public abstract class Vehicle {
 
@@ -25,7 +26,56 @@ public abstract class Vehicle {
         this.currentPort = currentPort;
         this.carryingCapacity = getAllContainerWeight();
     }
+    private static final String VEHICLE_FILE = "./DataSource/vehicle.txt";
 
+    public static void addVehicle(String vehicleId, String name, double currentFuel, double fuelCapacity) throws IOException {
+        BufferedWriter writer = new BufferedWriter(new FileWriter(VEHICLE_FILE, true));
+        writer.write(vehicleId + "," + name + "," + currentFuel + "," + fuelCapacity + ",null\n");
+        writer.close();
+    }
+
+    public static List<String> viewVehicles() throws IOException {
+        BufferedReader reader = new BufferedReader(new FileReader(VEHICLE_FILE));
+        List<String> vehicles = new ArrayList<>();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            vehicles.add(line);
+        }
+        reader.close();
+        return vehicles;
+    }
+
+    public void updateVehicle(String name, double currentFuel, double fuelCapacity, Port currentPort) throws IOException {
+        this.setName(name);
+        this.setCurrentFuel(currentFuel);
+        this.setCapacityFuel(fuelCapacity);
+        this.setCurrentPort(currentPort);
+    }
+
+    public static void deleteVehicle(String vehicleId) throws IOException {
+        List<String> vehicles = viewVehicles();
+        BufferedWriter writer = new BufferedWriter(new FileWriter(VEHICLE_FILE));
+        for (String vehicle : vehicles) {
+            if (!vehicle.startsWith(vehicleId)) {
+                writer.write(vehicle + "\n");
+            }
+        }
+        writer.close();
+    }
+
+   /* public static void main(String[] args) throws IOException {
+        // Example usage:
+        addVehicle("tr-0005", "testtruck", 300, 900);
+        List<String> vehiclesAfterAdd = viewVehicles();
+        updateVehicle("tr-0005", "updatedtruck", 350, 900);
+        List<String> vehiclesAfterUpdate = viewVehicles();
+        deleteVehicle("tr-0005");
+        List<String> vehiclesAfterDelete = viewVehicles();
+
+        System.out.println(vehiclesAfterAdd);
+        System.out.println(vehiclesAfterUpdate);
+        System.out.println(vehiclesAfterDelete);
+    }*/
     public String getName() {
         return name;
     }
@@ -106,21 +156,18 @@ public abstract class Vehicle {
         this.updateContainerCounts();
     }
 
-    public void moveAbleNewPort(Trip tr) {
-        boolean landingAble = tr.getArrivalPort().isLanding();
-        boolean comingPort = tr.getArrivalPort().loadContainertoPort(this);
-        double totalMovingConsumption = this.getTotalConsumption(tr.getArrivalPort());
-        if (this.getCurrentFuel() < totalMovingConsumption || landingAble || comingPort) {
-            tr.setStatus(false);
-            this.setCurrentPort(tr.getDeparturePort());
-            tr.getArrivalPort().removeVehicle(this);
-            System.out.println("This vehicle doesn't have enough fuel");
+    public abstract void moveAbleNewPort(Trip tr);
+
+    public boolean availableToMove(Trip tr) {
+        if(tr.getDeparturePort().equals(this.currentPort)) {
+            this.moveAbleNewPort(tr);
+            return true;
+        } else if (this.currentPort == null) {
+            this.moveAbleNewPort(tr);
+            return true;
         } else {
-            tr.setStatus(true);
-            this.setCurrentPort(tr.getArrivalPort());
-            tr.getArrivalPort().addVehicle(this);
-            this.setCurrentFuel(this.getCurrentFuel() - totalMovingConsumption);
-            System.out.println("Successfully move to arrival port");
+            System.out.println("This vehicle is on another port or this trip may be old");
+            return false;
         }
     }
 
@@ -143,4 +190,15 @@ public abstract class Vehicle {
                 ", carryingCapacity=" + carryingCapacity +
                 '}';
     }
+
+    public void addFuel(double fuelAmount) {
+        // Ensure we don't overfill the vehicle.
+        if (this.currentFuel + fuelAmount <= this.capacityFuel) {
+            this.currentFuel += fuelAmount;
+        } else {
+            this.currentFuel = this.capacityFuel;  // Fill to max capacity if fuelAmount is excessive.
+        }
+    }
+
+
 }

@@ -1,0 +1,5 @@
+P001,USA,1000,true,-17,70
+P002,VN,800,true,71,-29
+P003,China,2000,true,56,60
+P004,France,1100,false,-30,90
+P005,Itali,1100,false,-15,60

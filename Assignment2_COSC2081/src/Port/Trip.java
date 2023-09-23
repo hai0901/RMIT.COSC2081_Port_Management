@@ -69,22 +69,6 @@ public class Trip {
     public void setStatus(boolean status) {
         this.status = status;
     }
-
-//    public Boolean moveAbleNewPort(Vehicle ve) {
-//        double totalMovingConsumption = ve.getTotalConsumption(this.arrivalPort);
-//        if (ve.getCurrentFuel() < totalMovingConsumption) {
-//            this.status = false;
-//            ve.moveToPort(this);
-//            System.out.println("Cannot move");
-//        } else {
-//            this.status = true;
-//            ve.moveToPort(this);
-//            ve.setCurrentFuel(ve.getCurrentFuel()-totalMovingConsumption);
-//            System.out.println("Sucessfull move");
-//        }
-//        return this.status;
-//    }
-
     @Override
     public String toString() {
         return "Trip{" +
