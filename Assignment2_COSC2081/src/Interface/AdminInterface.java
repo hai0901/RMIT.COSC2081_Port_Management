@@ -74,6 +74,7 @@ public class AdminInterface {
             System.out.println("6. Manage Vehicles");
             System.out.println("7. Manage Containers");
             System.out.println("8. Manage Port");
+            System.out.println("9. Manage Trip");
 
             System.out.println("--------------------------------------------------");
             System.out.println("Enter your action: ");
@@ -142,6 +143,9 @@ public class AdminInterface {
 
                     case 8 -> {
                         managePort();
+                    }
+                    case 9 -> {
+                        manageTrip();
                     }
 
                     default -> System.out.println("Invalid action!");
@@ -254,6 +258,139 @@ public class AdminInterface {
             }
         }
         return chosenTrip;
+    }
+
+    public static void manageTrip() throws IOException {
+        System.out.println("1. Make Trip");
+        System.out.println("2. Update Trip");
+        System.out.println("3. Delete Trip");
+        System.out.println("4. View Trip");
+        System.out.println("5. Return to Admin Menu");
+        System.out.println("Enter your action: ");
+        int choice = scanner.nextInt();
+        scanner.nextLine();
+
+        switch (choice) {
+            case 1 -> {
+                System.out.println("Enter departure date (YYYY-MM-DD): ");
+                String departureDate = scanner.nextLine();
+                System.out.println("Enter arrival date (YYYY-MM-DD): ");
+                String arrivalDate = scanner.nextLine();
+                System.out.println("Enter departure port ID: ");
+                String departurePortID = scanner.nextLine();
+                System.out.println("Enter arrival port ID: ");
+                String arrivalPortID = scanner.nextLine();
+                System.out.println("Enter trip status ( true/false/null ): ");
+                String tripStatus = scanner.nextLine();
+                System.out.println("Enter vehicle ID: ");
+                String vehicleId = scanner.nextLine();
+
+                Boolean trStatus = null;
+                if ( tripStatus.equals("true")) {
+                    trStatus = true;
+                }
+                if ( tripStatus.equals("false")) {
+                    trStatus = false;
+                }
+                Vehicle vehicle = LoadDataBase.findVehicle(vehicleId);
+                if (vehicle == null) {
+                    System.out.println("Vehicle not found.");
+                    return; // Exit the case
+                }
+
+                Port departurePort = LoadDataBase.findPort(departurePortID);
+                Port arrivalPort = LoadDataBase.findPort(arrivalPortID);
+
+                if (departurePort == null || arrivalPort == null) {
+                    System.out.println("One or more ports not found.");
+                    return; // Exit the case
+                }
+
+
+
+                Trip newTrip = new Trip(
+                        vehicle,
+                        departureDate,
+                        arrivalDate,
+                        departurePort,
+                        arrivalPort,
+                        trStatus
+                );
+                LoadDataBase.tripList.add(newTrip);
+                System.out.println(LoadDataBase.tripList);
+
+                File.fileWriteTrip(LoadDataBase.tripList);
+                File.scheduleLineDeletion("Assignment2_COSC2081/src/DataSource/trip.txt", File.tripData, 1);
+                System.out.println("Trip created successfully!");
+            }
+            case 2 -> {
+                System.out.println("Enter vehicle ID to update Trip: ");
+                String vehicleId = scanner.nextLine();
+                Vehicle vehicleToUpdate = LoadDataBase.findVehicle(vehicleId);
+                if (vehicleToUpdate != null) {
+                    System.out.println("Enter new departure date (DD-MM-YYYY): ");
+                    String newDepartureDate = scanner.nextLine();
+                    System.out.println("Enter new arrival date (DD-MM-YYYY): ");
+                    String newArrivalDate = scanner.nextLine();
+                    System.out.println("Enter new departure port ID: ");
+                    String newDeparturePortID = scanner.nextLine();
+                    System.out.println("Enter new arrival port ID: ");
+                    String newArrivalPortID = scanner.nextLine();
+
+                    Trip tripToUpdate = LoadDataBase.findTripByVehicle(vehicleToUpdate);
+                    if (tripToUpdate != null) {
+                        Port newDeparturePort = LoadDataBase.findPort(newDeparturePortID);
+                        Port newArrivalPort = LoadDataBase.findPort(newArrivalPortID);
+
+                        if (newDeparturePort != null && newArrivalPort != null) {
+                            tripToUpdate.setDepartureDate(newDepartureDate);
+                            tripToUpdate.setArrivalDate(newArrivalDate);
+                            tripToUpdate.setDeparturePort(newDeparturePort);
+                            tripToUpdate.setArrivalPort(newArrivalPort);
+
+                            File.fileWriteTrip(LoadDataBase.tripList);
+                            System.out.println("Trip updated successfully!");
+                        } else {
+                            System.out.println("One or more ports not found.");
+                        }
+                    } else {
+                        System.out.println("Trip not found for the specified vehicle.");
+                    }
+                } else {
+                    System.out.println("Vehicle not found.");
+                }
+            }
+            case 3 -> {
+                System.out.println("Enter vehicle ID to delete Trip: ");
+                String vehicleId = scanner.nextLine();
+                Vehicle vehicleToDelete = LoadDataBase.findVehicle(vehicleId);
+                if (vehicleToDelete != null) {
+                    Trip tripToDelete = LoadDataBase.findTripByVehicle(vehicleToDelete);
+                    if (tripToDelete != null) {
+                        LoadDataBase.tripList.remove(tripToDelete);
+                        File.fileWriteTrip(LoadDataBase.tripList);
+                        System.out.println("Trip deleted successfully!");
+                    } else {
+                        System.out.println("Trip not found for the specified vehicle.");
+                    }
+                } else {
+                    System.out.println("Vehicle not found.");
+                }
+            }
+            case 4 -> {
+                System.out.println("List of Trips:");
+                for (Trip trip : LoadDataBase.tripList) {
+                    System.out.println(trip);
+                }
+            }
+            case 5 -> {
+                System.out.println("Returning to Admin Menu.");
+                adminMenu();
+            }
+            default -> {
+                System.out.println("Invalid action!");
+            }
+        }
     }
 
     @Override
@@ -466,6 +603,10 @@ public class AdminInterface {
             }
             case 5 -> {
                 System.out.println("Returning to Admin Menu.");
+                adminMenu();
+            }
+            default -> {
+                System.out.println("Invalid action!");
             }
         }
 

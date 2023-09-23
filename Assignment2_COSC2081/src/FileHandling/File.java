@@ -16,9 +16,11 @@ import Container.*;
 import Vehicle.*;
 import Port.*;
 
+import static java.awt.SystemColor.text;
 
 
 public class File {
+    public static String tripData = null;
 
 
     // Write to file
@@ -39,7 +41,7 @@ public class File {
         scheduleLineDeletion(fileName, text, 1);
     }
 
-    private static void scheduleLineDeletion(String fileName, String text, int minutesToKeep) {
+    public static void scheduleLineDeletion(String fileName, String text, long minutesToKeep) {
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
@@ -50,7 +52,7 @@ public class File {
                     e.printStackTrace();
                 }
             }
-        }, minutesToKeep * 60 * 1000); // set timmer : 1 minute
+        }, minutesToKeep * 20 * 1000); // set timmer : 10sec
     }
 
     private static void removeLineFromFile(String fileName, String lineToRemove) throws IOException {
@@ -161,11 +163,16 @@ public class File {
         writer4.close();
     }
     public static void fileWriteTrip(ArrayList<Trip> list) throws IOException {
-        BufferedWriter writer = new BufferedWriter(new FileWriter("Assignment2_COSC2081/src/DataSource/port.txt", false));
+        String fileName = "Assignment2_COSC2081/src/DataSource/trip.txt";
+        BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, false));
+
         for (Trip trip : list) {
-            writer.write(trip.getVehicle().getVehID() + "," + trip.getDepartureDate() + "," + trip.getArrivalDate() + "," + trip.getDeparturePort().getpNum() + "," + trip.getArrivalPort().getpNum() + "," + trip.getStatus());
+            tripData = new String(trip.getVehicle().getVehID() + "," + trip.getDepartureDate() + "," + trip.getArrivalDate() + "," + trip.getDeparturePort().getpNum() + "," + trip.getArrivalPort().getpNum() + "," + trip.getStatus());
+            writer.write(tripData);
             writer.newLine();
         }
+
         writer.close();
+
     }
 }
