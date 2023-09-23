@@ -405,25 +405,40 @@ public class AdminInterface {
 
         switch (choice) {
             case 1 -> {
-                System.out.println("Enter container ID: ");
-                String containerId = scanner.nextLine();
-                System.out.println("Enter container weight: ");
-                double weight = scanner.nextDouble();
-                System.out.println("Enter 1 of 5 container type (Drystorage, Opentop, Openside, Liquid, Refrigerated): ");
-                String type = scanner.nextLine();
-                if(type.equals("drystorage")) LoadDataBase.containerList.add(new DryStorage(containerId,weight));
-                else if(type.equals("refrigerated")) LoadDataBase.containerList.add(new Refrigerated(containerId,weight));
-                else if(type.equals("opentop")) LoadDataBase.containerList.add(new OpenTop(containerId,weight));
-                else if(type.equals("openside")) LoadDataBase.containerList.add(new OpenSide(containerId,weight));
-                else if(type.equals("liquid")) LoadDataBase.containerList.add(new Liquid(containerId,weight));
-                else System.out.println("Invalid type container");
+                System.out.println("Enter pNum(ID): ");
+                String pNum = scanner.nextLine();
+                System.out.println("Enter Port Name: ");
+                String pName = scanner.nextLine();
+                System.out.println("Enter Port Capacity: ");
+                double capacity = scanner.nextDouble();
+                System.out.println("Enter Port Landing: ");
+                boolean landing = scanner.nextBoolean();
+                System.out.println("Enter Port latitude: ");
+                double latitude = scanner.nextDouble();
+                System.out.println("Enter Port longitude: ");
+                double longitude = scanner.nextDouble();
+                LoadDataBase.portList.add(new Port(pNum, pName, capacity, landing, latitude, longitude));
+
             }
             case 2 -> {
-                System.out.println("Enter container ID to update: ");
-                String containerId = scanner.nextLine();
-                System.out.println("Enter new container weight: ");
-                double weight = scanner.nextDouble();
-                LoadDataBase.findContainer(containerId).setWeight(weight);
+                System.out.println("Enter pNum(ID) to update: ");
+                String pNum = scanner.nextLine();
+                Port cuPort = LoadDataBase.findPort(pNum);
+                if (cuPort == null) {
+                    System.out.println("Port doesn't existed in database");
+                } else {
+                    System.out.println("Enter Port Name: ");
+                    String pName = scanner.nextLine();
+                    System.out.println("Enter Port Capacity: ");
+                    double capacity = scanner.nextDouble();
+                    System.out.println("Enter Port Landing: ");
+                    boolean landing = scanner.nextBoolean();
+                    System.out.println("Enter Port latitude: ");
+                    double latitude = scanner.nextDouble();
+                    System.out.println("Enter Port longitude: ");
+                    double longitude = scanner.nextDouble();
+                    cuPort.updatePort(pName, capacity, landing, latitude, longitude);
+                }
             }
             case 3 -> {
                 System.out.println("Enter Port ID to delete: ");
