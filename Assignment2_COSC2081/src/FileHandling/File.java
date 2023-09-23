@@ -12,11 +12,13 @@ import java.nio.file.StandardOpenOption;
 import java.util.*;
 import java.io.*;
 import java.nio.file.*;
+import Container.*;
+import Vehicle.*;
+import Port.*;
 
 
 
 public class File {
-
 
 
     // Write to file
@@ -73,13 +75,11 @@ public class File {
     }
 
 
-
-
-
     // Read from file
     public static void readFromFileAndCreateList(String fileName, ArrayList list) {
 
     }
+
     // Update new content to file
     public static void updateToFile(String fileName, ArrayList<PortManager> list) throws IOException {
         BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, false));
@@ -90,5 +90,35 @@ public class File {
         writer.close();
     }
 
+    public static void fileWriteContainer(ArrayList<Container> list) throws IOException {
+        BufferedWriter writer1 = new BufferedWriter(new FileWriter("Assignment2_COSC2081/src/DataSource/dContainer.txt", false));
+        BufferedWriter writer2 = new BufferedWriter(new FileWriter("Assignment2_COSC2081/src/DataSource/reContainer.txt", false));
+        BufferedWriter writer3 = new BufferedWriter(new FileWriter("Assignment2_COSC2081/src/DataSource/lqContainer.txt", false));
+        BufferedWriter writer4 = new BufferedWriter(new FileWriter("Assignment2_COSC2081/src/DataSource/otContainer.txt", false));
+        BufferedWriter writer5 = new BufferedWriter(new FileWriter("Assignment2_COSC2081/src/DataSource/osContainer.txt", false));
+        for (Container c : list) {
+            if (c instanceof DryStorage) {
+                writer1.write(c.getId() + "," + c.getWeight());
+                writer1.newLine();
+            } else if (c instanceof Refrigerated) {
+                writer2.write(c.getId() + "," + c.getWeight());
+                writer2.newLine();
+            } else if (c instanceof Liquid) {
+                writer3.write(c.getId() + "," + c.getWeight());
+                writer3.newLine();
+            } else if (c instanceof OpenTop) {
+                writer4.write(c.getId() + "," + c.getWeight());
+                writer4.newLine();
+            } else {
+                writer5.write(c.getId() + "," + c.getWeight());
+                writer5.newLine();
+            }
+        }
+        writer1.close();
+        writer2.close();
+        writer3.close();
+        writer4.close();
+        writer5.close();
+    }
 
 }

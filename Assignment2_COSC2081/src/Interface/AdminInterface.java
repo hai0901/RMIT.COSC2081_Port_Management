@@ -1,4 +1,5 @@
 package Interface;
+import FileHandling.File;
 import FileHandling.LoadDataBase;
 import User.*;
 
@@ -33,7 +34,7 @@ public class AdminInterface {
         PortManager newManager = new PortManager(username, password, port);
         portManagerList.getPortManagersList().add(newManager);
 
-        FileHandling.File.writeToFile("Assignment2_COSC2081/DataSource/manager.txt", newManager.toString(), true);
+        FileHandling.File.writeToFile("Assignment2_COSC2081/src/DataSource/manager.txt", newManager.toString(), true);
     }
     public static String loginScreen() {
         System.out.println("Enter username: ");
@@ -103,7 +104,7 @@ public class AdminInterface {
                                 manager.setPort(scanner.nextLine());
 
                                 // Update in file
-                                FileHandling.File.updateToFile("Assignment2_COSC2081/DataSource/manager.txt", portManagerList.getPortManagersList());
+                                FileHandling.File.updateToFile("Assignment2_COSC2081/src/DataSource/manager.txt", portManagerList.getPortManagersList());
                                 break;
                             }
                         }
@@ -119,7 +120,7 @@ public class AdminInterface {
                         portManagerList.getPortManagersList().removeIf(manager -> manager.getUsername().equals(username));
 
                         // Update in file
-                        FileHandling.File.updateToFile("Assignment2_COSC2081/DataSource/manager.txt", portManagerList.getPortManagersList());
+                        FileHandling.File.updateToFile("Assignment2_COSC2081/src/DataSource/manager.txt", portManagerList.getPortManagersList());
                     }
 
                     case 4 -> {
@@ -169,6 +170,7 @@ public class AdminInterface {
                 String containerId = scanner.nextLine();
                 System.out.println("Enter container weight: ");
                 double weight = scanner.nextDouble();
+                scanner.nextLine();
                 System.out.println("Enter 1 of 5 container type (Drystorage, Opentop, Openside, Liquid, Refrigerated): ");
                 String type = scanner.nextLine();
                 if(type.equals("drystorage")) LoadDataBase.containerList.add(new DryStorage(containerId,weight));
@@ -177,6 +179,8 @@ public class AdminInterface {
                 else if(type.equals("openside")) LoadDataBase.containerList.add(new OpenSide(containerId,weight));
                 else if(type.equals("liquid")) LoadDataBase.containerList.add(new Liquid(containerId,weight));
                 else System.out.println("Invalid type container");
+
+                File.fileWriteContainer(LoadDataBase.containerList);
             }
             case 2 -> {
                 System.out.println("Enter container ID to update: ");
@@ -184,11 +188,13 @@ public class AdminInterface {
                 System.out.println("Enter new container weight: ");
                 double weight = scanner.nextDouble();
                 LoadDataBase.findContainer(containerId).setWeight(weight);
+                File.fileWriteContainer(LoadDataBase.containerList);
             }
             case 3 -> {
                 System.out.println("Enter container ID to delete: ");
                 String containerId = scanner.nextLine();
                 LoadDataBase.containerList.remove(LoadDataBase.findContainer(containerId));
+                File.fileWriteContainer(LoadDataBase.containerList);
             }
             case 4 -> {
                 for (Container c: LoadDataBase.containerList) {
