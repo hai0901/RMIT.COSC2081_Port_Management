@@ -1,5 +1,6 @@
 package Interface;
-import FileHandling.LoadDataBase;
+import FileHandling.*;
+
 import User.*;
 
 import Container.*;
@@ -33,7 +34,7 @@ public class AdminInterface {
         PortManager newManager = new PortManager(username, password, port);
         portManagerList.getPortManagersList().add(newManager);
 
-        FileHandling.File.writeToFile("Assignment2_COSC2081/DataSource/manager.txt", newManager.toString(), true);
+        FileHandling.File.writeToFile("Assignment2_COSC2081/src/DataSource/manager.txt", newManager.toString(), true);
     }
     public static String loginScreen() {
         System.out.println("Enter username: ");
@@ -73,6 +74,7 @@ public class AdminInterface {
             System.out.println("6. Manage Vehicles");
             System.out.println("7. Manage Containers");
             System.out.println("8. Manage Port");
+            System.out.println("9. Manage Trip");
 
             System.out.println("--------------------------------------------------");
             System.out.println("Enter your action: ");
@@ -103,7 +105,7 @@ public class AdminInterface {
                                 manager.setPort(scanner.nextLine());
 
                                 // Update in file
-                                FileHandling.File.updateToFile("Assignment2_COSC2081/DataSource/manager.txt", portManagerList.getPortManagersList());
+                                FileHandling.File.updateToFile("Assignment2_COSC2081/src/DataSource/manager.txt", portManagerList.getPortManagersList());
                                 break;
                             }
                         }
@@ -119,7 +121,7 @@ public class AdminInterface {
                         portManagerList.getPortManagersList().removeIf(manager -> manager.getUsername().equals(username));
 
                         // Update in file
-                        FileHandling.File.updateToFile("Assignment2_COSC2081/DataSource/manager.txt", portManagerList.getPortManagersList());
+                        FileHandling.File.updateToFile("Assignment2_COSC2081/src/DataSource/manager.txt", portManagerList.getPortManagersList());
                     }
 
                     case 4 -> {
@@ -135,7 +137,16 @@ public class AdminInterface {
                     case 6 ->{
                         manageVehicles();
                     }
-                    case 7 -> manageContainers();
+                    case 7 -> {
+                        manageContainers();
+                    }
+
+                    case 8 -> {
+                        managePort();
+                    }
+                    case 9 -> {
+                        manageTrip();
+                    }
 
                     default -> System.out.println("Invalid action!");
                 }
@@ -163,6 +174,7 @@ public class AdminInterface {
                 String containerId = scanner.nextLine();
                 System.out.println("Enter container weight: ");
                 double weight = scanner.nextDouble();
+                scanner.nextLine();
                 System.out.println("Enter 1 of 5 container type (Drystorage, Opentop, Openside, Liquid, Refrigerated): ");
                 String type = scanner.nextLine();
                 if(type.equals("drystorage")) LoadDataBase.containerList.add(new DryStorage(containerId,weight));
@@ -171,6 +183,8 @@ public class AdminInterface {
                 else if(type.equals("openside")) LoadDataBase.containerList.add(new OpenSide(containerId,weight));
                 else if(type.equals("liquid")) LoadDataBase.containerList.add(new Liquid(containerId,weight));
                 else System.out.println("Invalid type container");
+
+                File.fileWriteContainer(LoadDataBase.containerList);
             }
             case 2 -> {
                 System.out.println("Enter container ID to update: ");
@@ -178,11 +192,13 @@ public class AdminInterface {
                 System.out.println("Enter new container weight: ");
                 double weight = scanner.nextDouble();
                 LoadDataBase.findContainer(containerId).setWeight(weight);
+                File.fileWriteContainer(LoadDataBase.containerList);
             }
             case 3 -> {
                 System.out.println("Enter container ID to delete: ");
                 String containerId = scanner.nextLine();
                 LoadDataBase.containerList.remove(LoadDataBase.findContainer(containerId));
+                File.fileWriteContainer(LoadDataBase.containerList);
             }
             case 4 -> {
                 for (Container c: LoadDataBase.containerList) {
@@ -244,6 +260,139 @@ public class AdminInterface {
         return chosenTrip;
     }
 
+    public static void manageTrip() throws IOException {
+        System.out.println("1. Make Trip");
+        System.out.println("2. Update Trip");
+        System.out.println("3. Delete Trip");
+        System.out.println("4. View Trip");
+        System.out.println("5. Return to Admin Menu");
+        System.out.println("Enter your action: ");
+        int choice = scanner.nextInt();
+        scanner.nextLine();
+
+        switch (choice) {
+            case 1 -> {
+                System.out.println("Enter departure date (YYYY-MM-DD): ");
+                String departureDate = scanner.nextLine();
+                System.out.println("Enter arrival date (YYYY-MM-DD): ");
+                String arrivalDate = scanner.nextLine();
+                System.out.println("Enter departure port ID: ");
+                String departurePortID = scanner.nextLine();
+                System.out.println("Enter arrival port ID: ");
+                String arrivalPortID = scanner.nextLine();
+                System.out.println("Enter trip status ( true/false/null ): ");
+                String tripStatus = scanner.nextLine();
+                System.out.println("Enter vehicle ID: ");
+                String vehicleId = scanner.nextLine();
+
+                Boolean trStatus = null;
+                if ( tripStatus.equals("true")) {
+                    trStatus = true;
+                }
+                if ( tripStatus.equals("false")) {
+                    trStatus = false;
+                }
+                Vehicle vehicle = LoadDataBase.findVehicle(vehicleId);
+                if (vehicle == null) {
+                    System.out.println("Vehicle not found.");
+                    return; // Exit the case
+                }
+
+                Port departurePort = LoadDataBase.findPort(departurePortID);
+                Port arrivalPort = LoadDataBase.findPort(arrivalPortID);
+
+                if (departurePort == null || arrivalPort == null) {
+                    System.out.println("One or more ports not found.");
+                    return; // Exit the case
+                }
+
+
+
+                Trip newTrip = new Trip(
+                        vehicle,
+                        departureDate,
+                        arrivalDate,
+                        departurePort,
+                        arrivalPort,
+                        trStatus
+                );
+                LoadDataBase.tripList.add(newTrip);
+                System.out.println(LoadDataBase.tripList);
+
+                File.fileWriteTrip(LoadDataBase.tripList);
+                File.scheduleLineDeletion("Assignment2_COSC2081/src/DataSource/trip.txt", File.tripData, 1);
+                System.out.println("Trip created successfully!");
+            }
+            case 2 -> {
+                System.out.println("Enter vehicle ID to update Trip: ");
+                String vehicleId = scanner.nextLine();
+                Vehicle vehicleToUpdate = LoadDataBase.findVehicle(vehicleId);
+                if (vehicleToUpdate != null) {
+                    System.out.println("Enter new departure date (DD-MM-YYYY): ");
+                    String newDepartureDate = scanner.nextLine();
+                    System.out.println("Enter new arrival date (DD-MM-YYYY): ");
+                    String newArrivalDate = scanner.nextLine();
+                    System.out.println("Enter new departure port ID: ");
+                    String newDeparturePortID = scanner.nextLine();
+                    System.out.println("Enter new arrival port ID: ");
+                    String newArrivalPortID = scanner.nextLine();
+
+                    Trip tripToUpdate = LoadDataBase.findTripByVehicle(vehicleToUpdate);
+                    if (tripToUpdate != null) {
+                        Port newDeparturePort = LoadDataBase.findPort(newDeparturePortID);
+                        Port newArrivalPort = LoadDataBase.findPort(newArrivalPortID);
+
+                        if (newDeparturePort != null && newArrivalPort != null) {
+                            tripToUpdate.setDepartureDate(newDepartureDate);
+                            tripToUpdate.setArrivalDate(newArrivalDate);
+                            tripToUpdate.setDeparturePort(newDeparturePort);
+                            tripToUpdate.setArrivalPort(newArrivalPort);
+
+                            File.fileWriteTrip(LoadDataBase.tripList);
+                            System.out.println("Trip updated successfully!");
+                        } else {
+                            System.out.println("One or more ports not found.");
+                        }
+                    } else {
+                        System.out.println("Trip not found for the specified vehicle.");
+                    }
+                } else {
+                    System.out.println("Vehicle not found.");
+                }
+            }
+            case 3 -> {
+                System.out.println("Enter vehicle ID to delete Trip: ");
+                String vehicleId = scanner.nextLine();
+                Vehicle vehicleToDelete = LoadDataBase.findVehicle(vehicleId);
+                if (vehicleToDelete != null) {
+                    Trip tripToDelete = LoadDataBase.findTripByVehicle(vehicleToDelete);
+                    if (tripToDelete != null) {
+                        LoadDataBase.tripList.remove(tripToDelete);
+                        File.fileWriteTrip(LoadDataBase.tripList);
+                        System.out.println("Trip deleted successfully!");
+                    } else {
+                        System.out.println("Trip not found for the specified vehicle.");
+                    }
+                } else {
+                    System.out.println("Vehicle not found.");
+                }
+            }
+            case 4 -> {
+                System.out.println("List of Trips:");
+                for (Trip trip : LoadDataBase.tripList) {
+                    System.out.println(trip);
+                }
+            }
+            case 5 -> {
+                System.out.println("Returning to Admin Menu.");
+                adminMenu();
+            }
+            default -> {
+                System.out.println("Invalid action!");
+            }
+        }
+    }
+
     @Override
     public String toString() {
         return "AdminInterface{" +
@@ -286,6 +435,7 @@ public class AdminInterface {
                 else if(type.equals("tanker")) LoadDataBase.vehicleList.add(new TankerTruck(vehicleId, name, currentFuel, fuelCapacity, p));
                 else if(type.equals("ship")) LoadDataBase.vehicleList.add(new Ship(vehicleId, name, currentFuel, fuelCapacity, p));
                 else System.out.println("Invalid type");
+                File.fileWriteVehicle(LoadDataBase.vehicleList);
             }
 
             case 2 -> {
@@ -305,6 +455,7 @@ public class AdminInterface {
                     String curPortID = scanner.nextLine();
                     Port p = LoadDataBase.findPort(curPortID);
                     curVe.updateVehicle(name, currentFuel, fuelCapacity, p);
+                    File.fileWriteVehicle(LoadDataBase.vehicleList);
                 }
 
             }
@@ -313,6 +464,7 @@ public class AdminInterface {
                 String vehicleId = scanner.nextLine();
                 Vehicle foundVe = LoadDataBase.findVehicle(vehicleId);
                 LoadDataBase.vehicleList.remove(foundVe);
+                File.fileWriteVehicle(LoadDataBase.vehicleList);
             }
             case 4 -> {
                 System.out.println("View All Vehicles");
@@ -385,5 +537,78 @@ public class AdminInterface {
                 System.out.println("Invalid action!");
             }
         }
+    }
+
+    public static void managePort() throws IOException {
+        System.out.println("1. Add Port");
+        System.out.println("2. Update Port");
+        System.out.println("3. Delete Port");
+        System.out.println("4. View Port");
+        System.out.println("5. Return to Admin Menu");
+        System.out.println("Enter your action: ");
+        int choice = scanner.nextInt();
+        scanner.nextLine(); // Consume newline left over
+
+        switch (choice) {
+            case 1 -> {
+                System.out.println("Enter pNum(ID): ");
+                String pNum = scanner.nextLine();
+                System.out.println("Enter Port Name: ");
+                String pName = scanner.nextLine();
+                System.out.println("Enter Port Capacity: ");
+                double capacity = scanner.nextDouble();
+                System.out.println("Enter Port Landing: ");
+                boolean landing = scanner.nextBoolean();
+                System.out.println("Enter Port latitude: ");
+                double latitude = scanner.nextDouble();
+                System.out.println("Enter Port longitude: ");
+                double longitude = scanner.nextDouble();
+                LoadDataBase.portList.add(new Port(pNum, pName, capacity, landing, latitude, longitude));
+
+                File.fileWritePort(LoadDataBase.portList);
+
+            }
+            case 2 -> {
+                System.out.println("Enter pNum(ID) to update: ");
+                String pNum = scanner.nextLine();
+                Port cuPort = LoadDataBase.findPort(pNum);
+                if (cuPort == null) {
+                    System.out.println("Port doesn't existed in database");
+                } else {
+                    System.out.println("Enter Port Name: ");
+                    String pName = scanner.nextLine();
+                    System.out.println("Enter Port Capacity: ");
+                    double capacity = scanner.nextDouble();
+                    System.out.println("Enter Port Landing: ");
+                    boolean landing = scanner.nextBoolean();
+                    System.out.println("Enter Port latitude: ");
+                    double latitude = scanner.nextDouble();
+                    System.out.println("Enter Port longitude: ");
+                    double longitude = scanner.nextDouble();
+                    cuPort.updatePort(pName, capacity, landing, latitude, longitude);
+
+                    File.fileWritePort(LoadDataBase.portList);
+                }
+            }
+            case 3 -> {
+                System.out.println("Enter Port ID to delete: ");
+                String portId = scanner.nextLine();
+                LoadDataBase.portList.remove(LoadDataBase.findPort(portId));
+                File.fileWritePort(LoadDataBase.portList);
+            }
+            case 4 -> {
+                for (Port p: LoadDataBase.portList) {
+                    System.out.println(p);
+                }
+            }
+            case 5 -> {
+                System.out.println("Returning to Admin Menu.");
+                adminMenu();
+            }
+            default -> {
+                System.out.println("Invalid action!");
+            }
+        }
+
     }
 }

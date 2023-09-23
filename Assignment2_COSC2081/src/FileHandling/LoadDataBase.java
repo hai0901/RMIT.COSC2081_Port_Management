@@ -106,7 +106,14 @@ public class LoadDataBase {
                 }
             }
             if (vehInTrip != null && departPort != null && arrPort != null) {
-                Trip tr = new Trip(vehInTrip, parts[1], parts[2], departPort, arrPort,Boolean.parseBoolean(parts[5]));
+                Boolean status = null;
+                if (parts[5].equals("true")) {
+                    status = true;
+                }
+                if (parts[5].equals("false")){
+                    status = false;
+                }
+                Trip tr = new Trip(vehInTrip, parts[1], parts[2], departPort, arrPort, status);
                 tripList.add(tr);
             } else System.out.println("error in looping to get vehicle, departPort, arrPort");
 
@@ -145,5 +152,13 @@ public class LoadDataBase {
         return  LoadDataBase.tripList.stream().filter(trip -> trip.getVehicle().equals(ve)).collect(Collectors.toCollection(ArrayList<Trip>::new));
     }
 
+    public static Trip findTripByVehicle(Vehicle vehicle) {
+        for (Trip trip : LoadDataBase.tripList) {
+            if (trip.getVehicle().equals(vehicle)) {
+                return trip;
+            }
+        }
+        return null;
+    }
 
 }

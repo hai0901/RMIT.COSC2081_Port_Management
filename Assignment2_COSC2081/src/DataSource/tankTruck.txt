@@ -1,5 +1,5 @@
-tr-0003,tankertruck1,150,500,null
-tr-0012,tankertruck2,150,500,null
-tr-0013,tankertruck3,80,500,null
-tr-0014,tankertruck4,250,500,null
-tr-0015,tankertruck5,350,500,null
+tr-0003,tankertruck1,150.0,500.0,null
+tr-0012,tankertruck2,150.0,500.0,null
+tr-0013,tankertruck3,80.0,500.0,null
+tr-0014,tankertruck4,250.0,500.0,null
+tr-0015,tankertruck5,350.0,500.0,null
