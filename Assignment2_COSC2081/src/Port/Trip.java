@@ -1,30 +1,24 @@
 package Port;
 
 import Container.Container;
-import Port.Port;
 import Vehicle.*;
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
-import java.util.*;
+
 public class Trip {
     private Vehicle vehicle;
-    private Date arrivalDate;
-    private Date departureDate;
-    private Port arrivalPort;
+    private String departureDate;
+    private String arrivalDate;
     private Port departurePort;
-    private Container container;
+    private Port arrivalPort;
+    private Boolean status;
 
-    private enum status{
-        COMPLETED,
-        UNCOMPLETED
-    }
-
-    public Trip(Vehicle vehicle, Date arrivalDate, Date departureDate, Port arrivalPort, Port departurePort) {
+    public Trip(Vehicle vehicle, String departureDate, String arrivalDate, Port departurePort, Port arrivalPort, Boolean status) {
         this.vehicle = vehicle;
-        this.arrivalDate = arrivalDate;
         this.departureDate = departureDate;
-        this.arrivalPort = arrivalPort;
+        this.arrivalDate = arrivalDate;
         this.departurePort = departurePort;
+        this.arrivalPort = arrivalPort;
+        this.status = status;
     }
 
     public Vehicle getVehicle() {
@@ -35,24 +29,24 @@ public class Trip {
         this.vehicle = vehicle;
     }
 
-    public Date getArrivalDate() {
-        return arrivalDate;
+    public String getArrivalDate() {
+        return this.arrivalDate;
     }
 
-    public void setArrivalDate(Date arrivalDate) {
+    public void setArrivalDate(String arrivalDate) {
         this.arrivalDate = arrivalDate;
     }
 
-    public Date getDepartureDate() {
-        return departureDate;
+    public String getDepartureDate() {
+        return this.departureDate;
     }
 
-    public void setDepartureDate(Date departureDate) {
+    public void setDepartureDate(String departureDate) {
         this.departureDate = departureDate;
     }
 
     public Port getArrivalPort() {
-        return arrivalPort;
+        return this.arrivalPort;
     }
 
     public void setArrivalPort(Port arrivalPort) {
@@ -68,33 +62,22 @@ public class Trip {
     }
 
 
-
-    public long getTripDurationInHours() {
-        long durationMillis = arrivalDate.getTime() - departureDate.getTime();
-        return TimeUnit.MILLISECONDS.toHours(durationMillis);
+    public Boolean getStatus() {
+        return status;
     }
 
-    public boolean canPerformTrip() {
-        double totalWeightInPort = arrivalPort.getTotalContainerWeight();
-        double totalWeightOnVehicle = vehicle.getTotalContainerWeight();
-
-        // Calculate the estimated total weight after loading the container
-        double estimatedTotalWeight = totalWeightInPort + totalWeightOnVehicle + container.getConWeight();
-
-        return estimatedTotalWeight <= arrivalPort.getpCapacity();
+    public void setStatus(boolean status) {
+        this.status = status;
     }
-    public void performTrip() {
-        if (canPerformTrip()) {
-            departurePort.vehicleOutPort(vehicle);
-            vehicle.setCurrentPort(arrivalPort);
-            arrivalPort.vehiclesPortIn(vehicle);
-
-            System.out.println(vehicle.getName() + " has completed the trip from " +
-                    departurePort.getpName() + " to " + arrivalPort.getpName() +
-                    ", the journey will end on " + arrivalDate + " and cost " + getTripDurationInHours() + " hours.");
-        } else {
-            System.out.println("Cannot perform the trip due to weight constraints.");
-        }
+    @Override
+    public String toString() {
+        return "Trip{" +
+                "vehicle=" + vehicle +
+                ", departureDate='" + departureDate + '\'' +
+                ", arrivalDate='" + arrivalDate + '\'' +
+                ", departurePort=" + departurePort +
+                ", arrivalPort=" + arrivalPort +
+                ", status=" + status +
+                '}';
     }
-    
 }

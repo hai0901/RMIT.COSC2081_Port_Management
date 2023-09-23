@@ -1,46 +1,86 @@
 package Vehicle;
 
-import Container.Container;
-import Port.Port;
-import Container.DryStorage;
-import Container.OpenTop;
-import Container.Liquid;
-import Container.OpenSide;
-import Container.Refrigerated;
-import Port.Location;
+import Container.*;
+import Port.*;
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class Vehicle {
 
+    private String vehID;
     private String name;
     private double currentFuel;
     private double capacityFuel;
+    private double carryingCapacity;
     private Port currentPort;
-    private int container;
-    private String vehID;
-    private int carryingCapacity;
-    private int totalContainer;
-    private int dryStorageContainers;
-    private int openTopContainers;
-    private int openSideContainers;
-    private int refrigeratedContainers;
-    private int liquidContainers;
-    private Location location;
+    private ArrayList<Container> carryingContainers = new ArrayList<>();
 
 
-
-    public Vehicle(String name, double currentFuel, double capacityFuel, Port currentPort, int container, String vehID, int carryingCapacity) {
+    public Vehicle(String vehID, String name, double currentFuel, double capacityFuel, Port currentPort) {
+        this.vehID = vehID;
         this.name = name;
         this.currentFuel = currentFuel;
         this.capacityFuel = capacityFuel;
         this.currentPort = currentPort;
-        this.container = container;
-        this.vehID = vehID;
-        this.carryingCapacity = carryingCapacity;
-        this.totalContainer=0;//Default number of container is zero
+        this.carryingCapacity = getAllContainerWeight();
+    }
+    private static final String VEHICLE_FILE = "./DataSource/vehicle.txt";
+
+    public static void addVehicle(String vehicleId, String name, double currentFuel, double fuelCapacity) throws IOException {
+        BufferedWriter writer = new BufferedWriter(new FileWriter(VEHICLE_FILE, true));
+        writer.write(vehicleId + "," + name + "," + currentFuel + "," + fuelCapacity + ",null\n");
+        writer.close();
     }
 
+    public static List<String> viewVehicles() throws IOException {
+        BufferedReader reader = new BufferedReader(new FileReader(VEHICLE_FILE));
+        List<String> vehicles = new ArrayList<>();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            vehicles.add(line);
+        }
+        reader.close();
+        return vehicles;
+    }
+
+    public void updateVehicle(String name, double currentFuel, double fuelCapacity, Port currentPort) throws IOException {
+        this.setName(name);
+        this.setCurrentFuel(currentFuel);
+        this.setCapacityFuel(fuelCapacity);
+        this.setCurrentPort(currentPort);
+    }
+
+    public static void deleteVehicle(String vehicleId) throws IOException {
+        List<String> vehicles = viewVehicles();
+        BufferedWriter writer = new BufferedWriter(new FileWriter(VEHICLE_FILE));
+        for (String vehicle : vehicles) {
+            if (!vehicle.startsWith(vehicleId)) {
+                writer.write(vehicle + "\n");
+            }
+        }
+        writer.close();
+    }
+
+   /* public static void main(String[] args) throws IOException {
+        // Example usage:
+        addVehicle("tr-0005", "testtruck", 300, 900);
+        List<String> vehiclesAfterAdd = viewVehicles();
+        updateVehicle("tr-0005", "updatedtruck", 350, 900);
+        List<String> vehiclesAfterUpdate = viewVehicles();
+        deleteVehicle("tr-0005");
+        List<String> vehiclesAfterDelete = viewVehicles();
+
+        System.out.println(vehiclesAfterAdd);
+        System.out.println(vehiclesAfterUpdate);
+        System.out.println(vehiclesAfterDelete);
+    }*/
     public String getName() {
         return name;
     }
+
+    public void setName(String name) { this.name = name; }
 
     public double getCurrentFuel() {
         return currentFuel;
@@ -54,148 +94,111 @@ public abstract class Vehicle {
         return capacityFuel;
     }
 
+    public void setCapacityFuel(double capFuel) { this.capacityFuel = capFuel; }
+
     public Port getCurrentPort() {
-        return currentPort;
+        return this.currentPort;
     }
 
     public void setCurrentPort(Port currentPort) {
         this.currentPort = currentPort;
     }
 
-    public int getContainer() {
-        return container;
-    }
-
-    public void setContainer(int container) {
-        this.container = container;
-    }
-
     public String getVehID() {
         return vehID;
     }
 
-    public int getCarryingCapacity() {
+    public void setVehID(String vehID) { this.vehID = vehID; }
+
+    public ArrayList<Container> getCarryingContainers() {
+        return carryingContainers;
+    }
+
+    public void setCarryingContainers(ArrayList<Container> carryingContainers) {
+        this.carryingContainers = carryingContainers;
+    }
+
+    public double getCarryingCapacity() {
         return carryingCapacity;
     }
 
-    public int getTotalContainer() { return totalContainer; }
-
-    public int getDryStorageContainers() { return dryStorageContainers; }
-
-    public int getOpenTopContainers() { return openTopContainers; }
-
-    public int getOpenSideContainers() { return openSideContainers; }
-
-    public int getRefrigeratedContainers() { return refrigeratedContainers; }
-
-    public int getLiquidContainers() { return liquidContainers; }
-    public void refuel(){
-        currentFuel=capacityFuel;
-        //set the current fuel level to maximum capacity
-        System.out.println(name+"has been fully refueled");
+    public void setCarryingCapacity(double carryingCapacity) {
+        this.carryingCapacity = carryingCapacity;
     }
-    //This method is used to load the container
-    public void loadContainer(Container container){
-        totalContainer++;
-        if (container instanceof DryStorage){
-            dryStorageContainers++;
-        }
-        if (container instanceof OpenTop){
-            openTopContainers++;
-        }
-        if (container instanceof OpenSide){
-            openSideContainers++;
-        }
-        if (container instanceof Refrigerated){
-            refrigeratedContainers++;
-        }
-        if (container instanceof Liquid){
-            liquidContainers++;
-        }
-    }
-//This method is used to unload the container
-    public void unloadContainer(Container container){
-        totalContainer--;
-        if (container instanceof DryStorage){
-            dryStorageContainers--;
-        }
-        if (container instanceof OpenTop){
-            openTopContainers--;
-        }
-        if (container instanceof OpenSide){
-            openSideContainers--;
-        }
-        if (container instanceof Refrigerated){
-            refrigeratedContainers--;
-        }
-        if (container instanceof Liquid){
-            liquidContainers--;
-        }
-    }
-    private double getFuelConsumptionRateShip(Container container) {
-        if (container instanceof DryStorage){
-            return 3.5;
-        }
-        if (container instanceof OpenTop){
-            return 2.8;
-        }
-        if (container instanceof OpenTop){
-            return 2.7;
-        }
-        if (container instanceof Refrigerated){
-            return 4.5;
-        }
-        if (container instanceof Liquid){
-            return 4.8;
-        }
-        return 0.0;
-    }
-    private double getFuelConsumptionRateTruck(Container container) {
-        if (container instanceof DryStorage){
-            return 4.6;
-        }
-        if (container instanceof OpenTop){
-            return 3.2;
-        }
-        if (container instanceof OpenTop){
-            return 3.2;
-        }
-        if (container instanceof Refrigerated){
-            return 5.4;
-        }
-        if (container instanceof Liquid){
-            return 5.3;
-        }
-        return 0.0;
-    }
-    private double calculateFuelConsumption(Port destinationPort,Container container){
-        double fuelConsumptionRate;
-        if (this instanceof Ship) {
-            fuelConsumptionRate = getFuelConsumptionRateShip(container);
-        } else if (this instanceof Truck) {
 
-            fuelConsumptionRate = getFuelConsumptionRateTruck(container);
+    public double getAllContainerWeight() {
+        double totalCapacity = 0;
+        for ( Container c : carryingContainers) {
+            totalCapacity +=  c.getWeight();
+        }
+        return totalCapacity;
+    }
+
+    public ArrayList<Container> getAllContainer() {
+        return this.carryingContainers;
+    }
+
+    public int countTotalContainer() {
+        return carryingContainers.size();
+    }
+
+    public void unloadContainer (Container co) {
+        boolean match = false;
+        for( Container c : this.carryingContainers ) {
+            if( c.equals(co) ) {
+                this.carryingContainers.remove(c);
+                match = true;
+                break;
+            }
+        }
+        if (match) System.out.println("Unload container successfully");
+        else System.out.println("This container hasn't loaded yet");
+        this.updateContainerCounts();
+    }
+
+    public abstract void moveAbleNewPort(Trip tr);
+
+    public boolean availableToMove(Trip tr) {
+        if(tr.getDeparturePort().equals(this.currentPort)) {
+            this.moveAbleNewPort(tr);
+            return true;
+        } else if (this.currentPort == null) {
+            this.moveAbleNewPort(tr);
+            return true;
         } else {
-            fuelConsumptionRate = 1; //The default value for other vehicles if needed
+            System.out.println("This vehicle is on another port or this trip may be old");
+            return false;
         }
-        double fuelConsumption = fuelConsumptionRate * location.calculateDistance(destinationPort.getLocation());
-
-        return fuelConsumption;
-
     }
-    public void move(Port destinationPort,Container container) {
-        double fuelConsumption = calculateFuelConsumption(destinationPort, container);
-        if (currentFuel >= fuelConsumption) {
-            currentFuel -= fuelConsumption;
-            currentPort = destinationPort;
-            System.out.println(name + "has moved to" + destinationPort.getpName());
+
+    public void refuel(double currentFuel) {
+        this.setCurrentFuel(currentFuel);
+    }
+
+    public abstract void getAllSpecificContainerDetail();
+    public abstract void updateContainerCounts();
+    public abstract void loadContainer (Container co);
+    public abstract double getTotalConsumption(Port any);
+
+    @Override
+    public String toString() {
+        return "Vehicle{" +
+                "vehID='" + vehID + '\'' +
+                ", name='" + name + '\'' +
+                ", currentFuel=" + currentFuel +
+                ", capacityFuel=" + capacityFuel +
+                ", carryingCapacity=" + carryingCapacity +
+                '}';
+    }
+
+    public void addFuel(double fuelAmount) {
+        // Ensure we don't overfill the vehicle.
+        if (this.currentFuel + fuelAmount <= this.capacityFuel) {
+            this.currentFuel += fuelAmount;
         } else {
-            System.out.println(name + "does not have enough fuel to move to" + destinationPort.getpName());
+            this.currentFuel = this.capacityFuel;  // Fill to max capacity if fuelAmount is excessive.
         }
     }
 
 
-    public double getTotalContainerWeight() {
-
-    }
 }
