@@ -136,6 +136,7 @@ public class AdminInterface {
                         manageVehicles();
                     }
                     case 7 -> manageContainers();
+                    case 8 -> managePort();
 
                     default -> System.out.println("Invalid action!");
                 }
@@ -383,6 +384,67 @@ public class AdminInterface {
             }
             default -> {
                 System.out.println("Invalid action!");
+            }
+        }
+    }
+    public static void managePort() throws IOException {
+        System.out.println("1. Add Port");
+        System.out.println("2. Update Port");
+        System.out.println("3. Delete Port");
+        System.out.println("4. View Ports");
+        System.out.println("5. Return to Admin Menu");
+        System.out.println("Enter your action: ");
+        int choice = scanner.nextInt();
+        scanner.nextLine(); // Consume newline left over
+        switch (choice) {
+            case 1 -> {
+                System.out.println("Enter pNum(ID): ");
+                String pNum = scanner.nextLine();
+                System.out.println("Enter Port Name: ");
+                String pName = scanner.nextLine();
+                System.out.println("Enter Port Capacity: ");
+                double capacity = scanner.nextDouble();
+                System.out.println("Enter Port Landing: ");
+                boolean landing = scanner.nextBoolean();
+                System.out.println("Enter Port latitude: ");
+                double latitude = scanner.nextDouble();
+                System.out.println("Enter Port longitude: ");
+                double longitude = scanner.nextDouble();
+                LoadDataBase.portList.add(new Port(pNum, pName, capacity, landing, latitude, longitude));
+
+            }
+            case 2 -> {
+                System.out.println("Enter pNum(ID) to update: ");
+                String pNum = scanner.nextLine();
+                Port cuPort = LoadDataBase.findPort(pNum);
+                if (cuPort == null) {
+                    System.out.println("Port doesn't existed in database");
+                } else {
+                    System.out.println("Enter Port Name: ");
+                    String pName = scanner.nextLine();
+                    System.out.println("Enter Port Capacity: ");
+                    double capacity = scanner.nextDouble();
+                    System.out.println("Enter Port Landing: ");
+                    boolean landing = scanner.nextBoolean();
+                    System.out.println("Enter Port latitude: ");
+                    double latitude = scanner.nextDouble();
+                    System.out.println("Enter Port longitude: ");
+                    double longitude = scanner.nextDouble();
+                    cuPort.updatePort(pName, capacity, landing, latitude, longitude);
+                }
+            }
+            case 3 -> {
+                System.out.println("Enter Port ID to delete: ");
+                String portId = scanner.nextLine();
+                LoadDataBase.portList.remove(LoadDataBase.findPort(portId));
+            }
+            case 4 -> {
+                for (Port p : LoadDataBase.portList) {
+                    System.out.println(p);
+                }
+            }
+            case 5 -> {
+                System.out.println("Returning to Admin Menu.");
             }
         }
     }
