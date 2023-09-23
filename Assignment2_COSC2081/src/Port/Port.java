@@ -319,7 +319,7 @@ public class Port {
 
 
     public static List<Port> loadPortsFromFile() throws FileNotFoundException {
-        java.io.File file = new java.io.File("./DataSource/port.txt");
+        java.io.File file = new java.io.File("Assignment2_COSC2081/src/DataSource/port.txt");
         Scanner scanner = new Scanner(file);
         List<Port> ports = new ArrayList<>();
 

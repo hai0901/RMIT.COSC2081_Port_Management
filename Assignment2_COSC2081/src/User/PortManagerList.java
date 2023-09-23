@@ -45,10 +45,4 @@ public class PortManagerList {
         }
     }
 
-    public static void main(String[] args) throws FileNotFoundException {
-        PortManagerList portManagerList = new PortManagerList();
-        portManagerList.createPortManagerList();
-        portManagerList.displayPortManagerList();
-
-    }
 }
