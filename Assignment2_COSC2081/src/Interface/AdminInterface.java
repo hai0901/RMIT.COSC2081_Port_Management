@@ -1,6 +1,6 @@
 package Interface;
-import FileHandling.File;
-import FileHandling.LoadDataBase;
+import FileHandling.*;
+
 import User.*;
 
 import Container.*;
@@ -298,6 +298,7 @@ public class AdminInterface {
                 else if(type.equals("tanker")) LoadDataBase.vehicleList.add(new TankerTruck(vehicleId, name, currentFuel, fuelCapacity, p));
                 else if(type.equals("ship")) LoadDataBase.vehicleList.add(new Ship(vehicleId, name, currentFuel, fuelCapacity, p));
                 else System.out.println("Invalid type");
+                File.fileWriteVehicle(LoadDataBase.vehicleList);
             }
 
             case 2 -> {
@@ -317,6 +318,7 @@ public class AdminInterface {
                     String curPortID = scanner.nextLine();
                     Port p = LoadDataBase.findPort(curPortID);
                     curVe.updateVehicle(name, currentFuel, fuelCapacity, p);
+                    File.fileWriteVehicle(LoadDataBase.vehicleList);
                 }
 
             }
@@ -325,6 +327,7 @@ public class AdminInterface {
                 String vehicleId = scanner.nextLine();
                 Vehicle foundVe = LoadDataBase.findVehicle(vehicleId);
                 LoadDataBase.vehicleList.remove(foundVe);
+                File.fileWriteVehicle(LoadDataBase.vehicleList);
             }
             case 4 -> {
                 System.out.println("View All Vehicles");
@@ -425,6 +428,8 @@ public class AdminInterface {
                 double longitude = scanner.nextDouble();
                 LoadDataBase.portList.add(new Port(pNum, pName, capacity, landing, latitude, longitude));
 
+                File.fileWritePort(LoadDataBase.portList);
+
             }
             case 2 -> {
                 System.out.println("Enter pNum(ID) to update: ");
@@ -444,12 +449,15 @@ public class AdminInterface {
                     System.out.println("Enter Port longitude: ");
                     double longitude = scanner.nextDouble();
                     cuPort.updatePort(pName, capacity, landing, latitude, longitude);
+
+                    File.fileWritePort(LoadDataBase.portList);
                 }
             }
             case 3 -> {
                 System.out.println("Enter Port ID to delete: ");
                 String portId = scanner.nextLine();
                 LoadDataBase.portList.remove(LoadDataBase.findPort(portId));
+                File.fileWritePort(LoadDataBase.portList);
             }
             case 4 -> {
                 for (Port p: LoadDataBase.portList) {

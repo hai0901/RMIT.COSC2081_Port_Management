@@ -1,5 +1,5 @@
-tr-0002,reefertruck1,400,700,null
-tr-0008,reefertruck2,500,700,null
-tr-0009,reefertruck3,600,700,null
-tr-0010,reefertruck4,470,700,null
-tr-0011,reefertruck5,550,700,null
+tr-0002,reefertruck1,400.0,700.0,null
+tr-0008,reefertruck2,500.0,700.0,null
+tr-0009,reefertruck3,600.0,700.0,null
+tr-0010,reefertruck4,470.0,700.0,null
+tr-0011,reefertruck5,550.0,700.0,null

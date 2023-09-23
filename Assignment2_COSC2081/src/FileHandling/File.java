@@ -120,5 +120,52 @@ public class File {
         writer4.close();
         writer5.close();
     }
+    public static void fileWritePort(ArrayList<Port> list) throws IOException {
+        BufferedWriter writer = new BufferedWriter(new FileWriter("Assignment2_COSC2081/src/DataSource/port.txt", false));
+        for (Port port : list) {
+            writer.write(port.getpNum() + "," + port.getpName() + "," + port.getpCapacity() + "," + port.getLatitude() + "," + port.getLongitude());
+            writer.newLine();
+        }
+        writer.close();
+    }
+    public static void fileWriteVehicle(ArrayList<Vehicle> list) throws IOException {
+        BufferedWriter writer1 = new BufferedWriter(new FileWriter("Assignment2_COSC2081/src/DataSource/bsTruck.txt", false));
+        BufferedWriter writer2 = new BufferedWriter(new FileWriter("Assignment2_COSC2081/src/DataSource/refTruck.txt", false));
+        BufferedWriter writer3 = new BufferedWriter(new FileWriter("Assignment2_COSC2081/src/DataSource/tankTruck.txt", false));
+        BufferedWriter writer4 = new BufferedWriter(new FileWriter("Assignment2_COSC2081/src/DataSource/ship.txt", false));
 
+        for (Vehicle vehicle : list) {
+            String PortID;
+            if (vehicle.getCurrentPort() == null) {
+                PortID = "null";
+            } else {
+                PortID = vehicle.getCurrentPort().getpNum();
+            }
+            if (vehicle instanceof BasicTruck) {
+                writer1.write(vehicle.getVehID() + "," + vehicle.getName() + "," + vehicle.getCurrentFuel() + "," + vehicle.getCapacityFuel() + "," + PortID);
+                writer1.newLine();
+            } else if (vehicle instanceof ReeferTruck) {
+                writer2.write(vehicle.getVehID() + "," + vehicle.getName() + "," + vehicle.getCurrentFuel() + "," + vehicle.getCapacityFuel() + "," + PortID);
+                writer2.newLine();
+            } else if (vehicle instanceof TankerTruck) {
+                writer3.write(vehicle.getVehID() + "," + vehicle.getName() + "," + vehicle.getCurrentFuel() + "," + vehicle.getCapacityFuel() + "," + PortID);
+                writer3.newLine();
+            } else {
+                writer4.write(vehicle.getVehID() + "," + vehicle.getName() + "," + vehicle.getCurrentFuel() + "," + vehicle.getCapacityFuel() + "," + PortID);
+                writer4.newLine();
+            }
+        }
+        writer1.close();
+        writer2.close();
+        writer3.close();
+        writer4.close();
+    }
+    public static void fileWriteTrip(ArrayList<Trip> list) throws IOException {
+        BufferedWriter writer = new BufferedWriter(new FileWriter("Assignment2_COSC2081/src/DataSource/port.txt", false));
+        for (Trip trip : list) {
+            writer.write(trip.getVehicle().getVehID() + "," + trip.getDepartureDate() + "," + trip.getArrivalDate() + "," + trip.getDeparturePort().getpNum() + "," + trip.getArrivalPort().getpNum() + "," + trip.getStatus());
+            writer.newLine();
+        }
+        writer.close();
+    }
 }
