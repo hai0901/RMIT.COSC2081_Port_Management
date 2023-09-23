@@ -30,6 +30,14 @@ public class Port {
         this.latitude = latitude;
         this.longitude = longitude;
     }
+    public void updatePort(String newPName, double newPCapacity, boolean newLanding, double newLatitude, double newLongitude) {
+        // Update the attributes with new values
+        this.pName = newPName;
+        this.pCapacity = newPCapacity;
+        this.landing = newLanding;
+        this.latitude = newLatitude;
+        this.longitude = newLongitude;
+    }
 
     public String getpNum() {
         return pNum;

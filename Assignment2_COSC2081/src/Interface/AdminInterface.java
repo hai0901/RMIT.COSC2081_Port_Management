@@ -135,7 +135,13 @@ public class AdminInterface {
                     case 6 ->{
                         manageVehicles();
                     }
-                    case 7 -> manageContainers();
+                    case 7 -> {
+                        manageContainers();
+                    }
+
+                    case 8 -> {
+                        managePort();
+                    }
 
                     default -> System.out.println("Invalid action!");
                 }
@@ -385,5 +391,54 @@ public class AdminInterface {
                 System.out.println("Invalid action!");
             }
         }
+    }
+
+    public static void managePort() throws IOException {
+        System.out.println("1. Add Port");
+        System.out.println("2. Update Port");
+        System.out.println("3. Delete Port");
+        System.out.println("4. View Port");
+        System.out.println("5. Return to Admin Menu");
+        System.out.println("Enter your action: ");
+        int choice = scanner.nextInt();
+        scanner.nextLine(); // Consume newline left over
+
+        switch (choice) {
+            case 1 -> {
+                System.out.println("Enter container ID: ");
+                String containerId = scanner.nextLine();
+                System.out.println("Enter container weight: ");
+                double weight = scanner.nextDouble();
+                System.out.println("Enter 1 of 5 container type (Drystorage, Opentop, Openside, Liquid, Refrigerated): ");
+                String type = scanner.nextLine();
+                if(type.equals("drystorage")) LoadDataBase.containerList.add(new DryStorage(containerId,weight));
+                else if(type.equals("refrigerated")) LoadDataBase.containerList.add(new Refrigerated(containerId,weight));
+                else if(type.equals("opentop")) LoadDataBase.containerList.add(new OpenTop(containerId,weight));
+                else if(type.equals("openside")) LoadDataBase.containerList.add(new OpenSide(containerId,weight));
+                else if(type.equals("liquid")) LoadDataBase.containerList.add(new Liquid(containerId,weight));
+                else System.out.println("Invalid type container");
+            }
+            case 2 -> {
+                System.out.println("Enter container ID to update: ");
+                String containerId = scanner.nextLine();
+                System.out.println("Enter new container weight: ");
+                double weight = scanner.nextDouble();
+                LoadDataBase.findContainer(containerId).setWeight(weight);
+            }
+            case 3 -> {
+                System.out.println("Enter Port ID to delete: ");
+                String portId = scanner.nextLine();
+                LoadDataBase.portList.remove(LoadDataBase.findPort(portId));
+            }
+            case 4 -> {
+                for (Port p: LoadDataBase.portList) {
+                    System.out.println(p);
+                }
+            }
+            case 5 -> {
+                System.out.println("Returning to Admin Menu.");
+            }
+        }
+
     }
 }
