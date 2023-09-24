@@ -300,9 +300,9 @@ public class AdminInterface {
 
         switch (choice) {
             case 1 -> {
-                System.out.println("Enter departure date (YYYY-MM-DD): ");
+                System.out.println("Enter departure date (DD-MM-YYYY): ");
                 String departureDate = scanner.nextLine();
-                System.out.println("Enter arrival date (YYYY-MM-DD): ");
+                System.out.println("Enter arrival date (DD-MM-YYYY): ");
                 String arrivalDate = scanner.nextLine();
                 System.out.println("Enter departure port ID: ");
                 String departurePortID = scanner.nextLine();
