@@ -1,5 +1,5 @@
-tr-0001,basictruck1,200,800,null
-tr-0004,basictruck2,200,800,null
-tr-0005,basictruck3,250,800,null
-tr-0006,basictruck4,350,800,null
-tr-0007,basictruck5,450,800,null
+tr-0001,basictruck1,200.0,800.0,null
+tr-0004,basictruck2,200.0,800.0,null
+tr-0005,basictruck3,250.0,800.0,null
+tr-0006,basictruck4,350.0,800.0,null
+tr-0007,basictruck5,450.0,800.0,null

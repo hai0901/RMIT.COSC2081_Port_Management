@@ -1,4 +1,0 @@
-tr-0001,basictruck1,200,800,null
-tr-0002,reefertruck1,400,700,null
-tr-0003,tankertruck1,150,500,null
-sh-0001,ship1,200,5000,null

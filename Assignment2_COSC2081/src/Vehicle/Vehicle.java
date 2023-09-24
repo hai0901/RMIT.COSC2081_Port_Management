@@ -26,24 +26,11 @@ public abstract class Vehicle {
         this.currentPort = currentPort;
         this.carryingCapacity = getAllContainerWeight();
     }
-    private static final String VEHICLE_FILE = "./DataSource/vehicle.txt";
 
-    public static void addVehicle(String vehicleId, String name, double currentFuel, double fuelCapacity) throws IOException {
-        BufferedWriter writer = new BufferedWriter(new FileWriter(VEHICLE_FILE, true));
-        writer.write(vehicleId + "," + name + "," + currentFuel + "," + fuelCapacity + ",null\n");
-        writer.close();
-    }
 
-    public static List<String> viewVehicles() throws IOException {
-        BufferedReader reader = new BufferedReader(new FileReader(VEHICLE_FILE));
-        List<String> vehicles = new ArrayList<>();
-        String line;
-        while ((line = reader.readLine()) != null) {
-            vehicles.add(line);
-        }
-        reader.close();
-        return vehicles;
-    }
+
+
+
 
     public void updateVehicle(String name, double currentFuel, double fuelCapacity, Port currentPort) throws IOException {
         this.setName(name);
@@ -52,16 +39,7 @@ public abstract class Vehicle {
         this.setCurrentPort(currentPort);
     }
 
-    public static void deleteVehicle(String vehicleId) throws IOException {
-        List<String> vehicles = viewVehicles();
-        BufferedWriter writer = new BufferedWriter(new FileWriter(VEHICLE_FILE));
-        for (String vehicle : vehicles) {
-            if (!vehicle.startsWith(vehicleId)) {
-                writer.write(vehicle + "\n");
-            }
-        }
-        writer.close();
-    }
+
 
    /* public static void main(String[] args) throws IOException {
         // Example usage:
