@@ -608,17 +608,18 @@ public class AdminInterface {
             }
             case 8 -> {
                 boolean retry = true;
-                System.out.println("Enter vehicle ID ro refuel: ");
+                System.out.println("Enter vehicle ID to refuel: ");
                 String vehicleID = scanner.nextLine();
                 Vehicle foundVe = LoadDataBase.findVehicle(vehicleID);
                 while(retry) {
                     System.out.println("Enter amount to refuel: ");
                     double refuelAmt = scanner.nextDouble();
-                    if (refuelAmt > foundVe.getCapacityFuel()) {;
+                    if (refuelAmt > foundVe.getCapacityFuel()) {
                         retry = true;
                     } else {
                         foundVe.setCurrentFuel(refuelAmt);
                         System.out.println("Successfully refuel");
+                        File.fileWriteVehicle(LoadDataBase.vehicleList);
                         retry = false;
                     }
                 }
