@@ -56,7 +56,7 @@ public class File {
                     e.printStackTrace();
                 }
             }
-        }, minutesToKeep * 70 * 1000); // set timmer : 10sec
+        }, minutesToKeep * 30 * 1000); // set timmer : 30 seconds
     }
 
     private static void removeLineFromFile(String fileName, String lineToRemove) throws IOException {
