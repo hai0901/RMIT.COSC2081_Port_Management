@@ -1,3 +1,4 @@
+package Vehicle;/*
 package Vehicle;
 
 import Container.Container;
@@ -174,4 +175,39 @@ public class Vehicle {
     }
     //This method is used to check if the vehicle can carry the container
 
+}
+*/
+
+public class Vehicle {
+    private String vehicleId;
+    private String name;
+
+    public Vehicle(String vehicleId, String name) {
+        this.vehicleId = vehicleId;
+        this.name = name;
+    }
+
+    public String getVehicleId() {
+        return vehicleId;
+    }
+
+    public void setVehicleId(String vehicleId) {
+        this.vehicleId = vehicleId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "Vehicle{" +
+                "vehicleId='" + vehicleId + '\'' +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

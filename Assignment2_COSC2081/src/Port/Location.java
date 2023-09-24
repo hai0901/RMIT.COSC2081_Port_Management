@@ -1,10 +1,13 @@
+/*
 package Port;
 
 public class Location {
 
-    /****************
+    */
+/****************
      * Set variable.*
-     ****************/
+     ****************//*
+
 
 
     private double latitude;
@@ -52,4 +55,4 @@ public class Location {
         return distance;
     }
 
-}
+}*/
